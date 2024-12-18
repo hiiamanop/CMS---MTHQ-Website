@@ -24,85 +24,90 @@ Route::get('beranda', [ApiBerandaController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiDetailBeritaController;
 
-Route::apiResource('detail-berita', [ApiDetailBeritaController::class, 'index']);
+Route::get('detail-berita', [ApiDetailBeritaController::class, 'index']);
 
 
 use App\Http\Controllers\Api\ApiGaleriController;
 
-Route::apiResource('galeri', [ApiGaleriController::class, 'index']);
+Route::get('galeri', [ApiGaleriController::class, 'index']);
+
 
 use App\Http\Controllers\Api\ApiKalenderAkademikController;
 
-Route::apiResource('kalender-akademik', [ApiKalenderAkademikController::class, 'index']);
+Route::get('kalender-akademik', [ApiKalenderAkademikController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiKegiatanSantriController;
 
-Route::apiResource('kegiatan-santri', [ApiKegiatanSantriController::class, 'index']);
+Route::get('kegiatan-santri', [ApiKegiatanSantriController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiKontakController;
 
-Route::apiResource('kontak', [ApiKontakController::class, 'index']);
+Route::get('kontak', [ApiKontakController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiListBeritaController;
 
-Route::apiResource('list-berita', [ApiListBeritaController::class, 'index']);
+Route::get('list-berita', [ApiListBeritaController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiMhtqDuaController;
 
-Route::apiResource('mhtq-dua', [ApiMhtqDuaController::class, 'index']);
+Route::get('mhtq-dua', [ApiMhtqDuaController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiMhtqFasilitasController;
 
-Route::apiResource('mhtq-fasilitas', [ApiMhtqFasilitasController::class, 'index']);
+Route::get('mhtq-fasilitas', [ApiMhtqFasilitasController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiMhtqKeunggulanController;
 
-Route::apiResource('mhtq-keunggulan', [ApiMhtqKeunggulanController::class, 'index']);
+Route::get('mhtq-keunggulan', [ApiMhtqKeunggulanController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiProgramBahasaController;
 
-Route::apiResource('program-bahasa', [ApiProgramBahasaController::class, 'index']);
+Route::get('program-bahasa', [ApiProgramBahasaController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiProgramKeamananController;
 
-Route::apiResource('program-keamanan', [ApiProgramKeamananController::class, 'index']);
+Route::get('program-keamanan', [ApiProgramKeamananController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiProgramKesehatanController;
 
-Route::apiResource('program-kesehatan', [ApiProgramKesehatanController::class, 'index']);
+Route::get('program-kesehatan', [ApiProgramKesehatanController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiProgramOlahragaController;
 
-Route::apiResource('program-olahraga', [ApiProgramOlahragaController::class, 'index']);
+Route::get('program-olahraga', [ApiProgramOlahragaController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiProgramPengasuhanController;
 
-Route::apiResource('program-pengasuhan', [ApiProgramPengasuhanController::class, 'index']);
+Route::get('program-pengasuhan', [ApiProgramPengasuhanController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiProgramTahfidzController;
 
-Route::apiResource('program-tahfidz', [ApiProgramTahfidzController::class, 'index']);
+Route::get('program-tahfidz', [ApiProgramTahfidzController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiProgramTalimController;
 
-Route::apiResource('program-talim', [ApiProgramTalimController::class, 'index']);
+Route::get('program-talim', [ApiProgramTalimController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiProgramUbudiyahController;
 
-Route::apiResource('program-ubudiyah', [ApiProgramUbudiyahController::class, 'index']);
+Route::get('program-ubudiyah', [ApiProgramUbudiyahController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiProgramWirausahaController;
 
-Route::apiResource('program-wirausaha', [ApiProgramWirausahaController::class, 'index']);
+Route::get('program-wirausaha', [ApiProgramWirausahaController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiTentangMhtqPendiriController;
 
-Route::apiResource('tentang-mhtq-pendiri', [ApiTentangMhtqPendiriController::class, 'index']);
+Route::get('tentang-mhtq-pendiri', [ApiTentangMhtqPendiriController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiTentangMhtqPimpinanController;
 
-Route::apiResource('tentang-mhtq-pimpinan', [ApiTentangMhtqPimpinanController::class, 'index']);
+Route::get('tentang-mhtq-pimpinan', [ApiTentangMhtqPimpinanController::class, 'index']);
 
 use App\Http\Controllers\Api\ApiTentangMhtqProfileController;
 
-Route::apiResource('tentang-mhtq-profile', [ApiTentangMhtqProfileController::class, 'index']);
+Route::get('tentang-mhtq-profile', [ApiTentangMhtqProfileController::class, 'index']);
+
+
+
+
