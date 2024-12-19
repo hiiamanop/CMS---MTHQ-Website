@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\KegiatanSantri;
+use App\Models\Section;
 use Illuminate\Http\Request;
 
 class KegiatanSantriController extends Controller
@@ -12,10 +13,7 @@ class KegiatanSantriController extends Controller
      */
     public function index()
     {
-        // Ambil semua data kegiatan santri
-        $kegiatanSantris = KegiatanSantri::paginate(10);
-
-        // Tampilkan halaman index
+        $kegiatanSantris = KegiatanSantri::with('section')->paginate(10);
         return view('kegiatan_santris.index', compact('kegiatanSantris'));
     }
 
@@ -24,8 +22,8 @@ class KegiatanSantriController extends Controller
      */
     public function create()
     {
-        // Tampilkan form create
-        return view('kegiatan_santris.create');
+        $sections = Section::all(); // Ambil semua data section
+        return view('kegiatan_santris.create', compact('sections'));
     }
 
     /**
@@ -33,20 +31,15 @@ class KegiatanSantriController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
             'keterangan' => 'required|string|max:255',
         ]);
 
-        // Simpan data ke database
-        KegiatanSantri::create([
-            'nama_attribute' => $request->input('nama_attribute'),
-            'keterangan' => $request->input('keterangan'),
-        ]);
+        KegiatanSantri::create($request->all());
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('kegiatan_santris.index')->with('success', 'Data berhasil ditambahkan.');
+        return redirect()->route('kegiatan_santris.index')->with('success', 'Kegiatan santri berhasil ditambahkan.');
     }
 
     /**
@@ -54,8 +47,9 @@ class KegiatanSantriController extends Controller
      */
     public function edit($id)
     {
-        $kegiatanSantri = KegiatanSantri::find($id);
-        return view('kegiatan_santris.edit', compact('kegiatanSantri'));
+        $kegiatanSantri = KegiatanSantri::findOrFail($id);
+        $sections = Section::all(); // Ambil semua data section
+        return view('kegiatan_santris.edit', compact('kegiatanSantri', 'sections'));
     }
 
 
@@ -65,26 +59,26 @@ class KegiatanSantriController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string|max:500',
+            'keterangan' => 'required|string|max:255',
         ]);
 
-        $kegiatanSantri = KegiatanSantri::find($id);
+        $kegiatanSantri = KegiatanSantri::findOrFail($id);
         $kegiatanSantri->update($request->all());
 
-        return redirect()->route('kegiatan_santris.index')->with('success', 'Data berhasil diperbarui');
+        return redirect()->route('kegiatan_santris.index')->with('success', 'Kegiatan santri berhasil diperbarui.');
     }
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(KegiatanSantri $kegiatanSantri)
+    public function destroy($id)
     {
-        // Hapus data
+        $kegiatanSantri = KegiatanSantri::findOrFail($id);
         $kegiatanSantri->delete();
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('kegiatan_santris.index')->with('success', 'Data berhasil dihapus.');
+        return redirect()->route('kegiatan_santris.index')->with('success', 'Kegiatan santri berhasil dihapus.');
     }
 }

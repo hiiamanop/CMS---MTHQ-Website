@@ -63,16 +63,33 @@
                             </div>
                             @endif
 
+                            <label for="section_id" class="form-label">Pilih Section</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <select name="section_id" id="section_id" class="form-control">
+                                    <option value="">-- Pilih Section --</option>
+                                    @foreach ($sections as $section)
+                                    <option value="{{ $section->id }}">
+                                        {{ $section->item . ' - ' . $section->section }}
+                                    </option>
+                                    @endforeach
+                                </select required>
+                            </div>
+
+                            <label for="keterangan" class="form-label">Nama Attribute</label>
+
                             <!-- Input Nama Kegiatan -->
-                            <div class="input-group input-group-outline my-3">
+                            <div class="input-group input-group-outline mb-3">
                                 <input type="text" name="nama_attribute" class="form-control" value="{{ old('nama_attribute', $mhtqDua->nama_attribute) }}" required>
                                 @error('nama_attribute')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            <label for="keterangan" class="form-label">Keterangan</label>
+
+
                             <!-- Input Keterangan -->
-                            <div class="input-group input-group-outline my-3">
+                            <div class="input-group input-group-outline mb-3">
                                 <textarea name="keterangan" class="form-control" required>{{ old('keterangan', $mhtqDua->keterangan) }}</textarea>
                                 @error('keterangan')
                                 <div class="invalid-feedback">{{ $message }}</div>

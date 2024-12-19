@@ -9,9 +9,18 @@ class MhtqDua extends Model
 {
     use HasFactory;
 
-    // Specify the table name (optional if following naming convention)
-    protected $table = 'mhtq_duas';
+    protected $fillable = [
+        'section_id', 
+        'nama_attribute', 
+        'keterangan',
+        'tipe_konten',
+        'konten_teks',
+        'konten_gambar'
+    ];
 
-    // Specify the fillable fields
-    protected $fillable = ['nama_attribute', 'keterangan'];
+    // Definisikan relasi dengan model Section
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
 }

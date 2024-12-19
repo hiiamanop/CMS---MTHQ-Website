@@ -13,8 +13,14 @@ return new class extends Migration
     {
         Schema::create('kalender_akademiks', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('section_id')
+                  ->nullable() // Tambahkan nullable di sini
+                  ->constrained('sections') // Menyebut tabel secara eksplisit
+                  ->cascadeOnDelete(); // Hapus detail jika berita terkait dihapus
             $table->string('nama_attribute');
-            $table->string('gambar');
+            $table->enum('tipe_konten', ['teks', 'gambar'])->default('teks');
+            $table->text('konten_teks')->nullable();
+            $table->string('konten_gambar')->nullable();
             $table->timestamps();
         });
     }

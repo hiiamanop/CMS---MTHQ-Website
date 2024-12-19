@@ -55,6 +55,11 @@ Route::resource('roles', RoleController::class);
 Route::get('roles/{id}/edit', [RoleController::class, 'edit'])->name('role.edit');
 Route::delete('roles/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
 
+use App\Http\Controllers\SectionController;
+
+Route::resource('sections', SectionController::class);
+
+
 use App\Http\Controllers\BerandaController;
 
 Route::resource('berandas', BerandaController::class);

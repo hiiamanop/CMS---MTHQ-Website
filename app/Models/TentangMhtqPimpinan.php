@@ -12,7 +12,16 @@ class TentangMhtqPimpinan extends Model
     protected $table = 'tentang_mhtq_pimpinans';
 
     protected $fillable = [
+        'section_id', 
         'nama_attribute',
         'keterangan',
+        'tipe_konten',
+        'konten_teks',
+        'konten_gambar'
     ];
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
 }

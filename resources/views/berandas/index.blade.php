@@ -39,18 +39,37 @@
                         <div class="table-responsive p-0">
                             <a href="{{ route('berandas.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Attribute</a>
 
-                            {{-- Success Message --}}
-                            @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                            @if(session()->has('success'))
+                            <script>
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil!',
+                                    text: '{{ session('
+                                    success ') }}', // Hapus spasi di dalam session()
+                                    timer: 3000,
+                                    showConfirmButton: false
+                                });
+                            </script>
+                            @endif
+
+                            @if(session()->has('error'))
+                            <script>
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: '{{ session('
+                                    error ') }}', // Hapus spasi di dalam session()
+                                    timer: 3000,
+                                    showConfirmButton: false
+                                });
+                            </script>
                             @endif
 
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">No</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Item - Section - Halaman</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Attribute</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Keterangan</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
@@ -61,6 +80,9 @@
                                     <tr>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             {{ ($berandas->currentPage() - 1) * $berandas->perPage() + $index + 1 }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ $beranda->section ? $beranda->section->item . ' - ' . $beranda->section->section : 'N/A' }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $beranda->nama_attribute }}</td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $beranda->keterangan }}</td>
@@ -95,6 +117,32 @@
         </div>
     </div>
 </main>
+
+@if(session()->has('success') || session()->has('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '{{ session('success') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+            
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '{{ session('error') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+        });
+    </script>
+@endif
 
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

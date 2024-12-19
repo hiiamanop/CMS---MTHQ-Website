@@ -13,7 +13,16 @@ class KalenderAkademik extends Model
 
     // Fields yang bisa diisi
     protected $fillable = [
+        'section_id',
         'nama_attribute',
-        'gambar',
+        'tipe_konten',
+        'konten_teks',
+        'konten_gambar'
     ];
+
+    
+    public function section()
+    {
+        return $this->belongsTo(Section::class, 'section_id', 'id');
+    }
 }

@@ -14,10 +14,19 @@ class MhtqFasilitas extends Model
 
     // Menentukan kolom yang dapat diisi secara massal
     protected $fillable = [
+        'section_id', 
         'nama_attribute',
         'keterangan',
+        'tipe_konten',
+        'konten_teks',
+        'konten_gambar'
     ];
 
     // Menentukan kolom yang tidak bisa diubah
     protected $guarded = [];
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
 }

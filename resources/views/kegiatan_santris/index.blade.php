@@ -39,19 +39,12 @@
                         <div class="table-responsive p-0">
                             <a href="{{ route('kegiatan_santris.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Attribute</a>
 
-                            {{-- Success Message --}}
-                            @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                            @endif
-
                             <!-- Table -->
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">No</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Item - Section - Halaman</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Attribute</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Keterangan</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
@@ -62,6 +55,10 @@
                                     <tr>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             {{ ($kegiatanSantris->currentPage() - 1) * $kegiatanSantris->perPage() + $index + 1 }}
+                                        </td>
+
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ $kegiatan->section ? $kegiatan->section->item . ' - ' . $kegiatan->section->section : 'N/A' }}
                                         </td>
 
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $kegiatan->nama_attribute }}</td>
@@ -100,6 +97,32 @@
         </div>
     </div>
 </main>
+
+@if(session()->has('success') || session()->has('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '{{ session('success') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+            
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '{{ session('error') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+        });
+    </script>
+@endif
 
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

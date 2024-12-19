@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
         <div class="container-fluid py-1 px-3">
@@ -63,7 +63,21 @@
                             </div>
                             @endif
 
-                            <div class="input-group input-group-outline my-3">
+                            <label for="section_id" class="form-label">Pilih Section</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <select name="section_id" id="section_id" class="form-control">
+                                    <option value="">-- Pilih Section --</option>
+                                    @foreach ($sections as $section)
+                                    <option value="{{ $section->id }}">
+                                        {{ $section->item . ' - ' . $section->section }}
+                                    </option>
+                                    @endforeach
+                                </select required>
+                            </div>
+
+                            <label for="keterangan" class="form-label">Nama Attribute</label>
+
+                            <div class="input-group input-group-outline mb-3">
                                 <input type="text" name="nama_attribute" class="form-control" value="{{ old('nama_attribute', $kegiatanSantri->nama_attribute) }}" required>
 
                                 @error('nama_attribute')
@@ -71,14 +85,14 @@
                                 @enderror
                             </div>
 
-                            <div class="input-group input-group-outline my-3">
+                            <label for="keterangan" class="form-label">Keterangan</label>
+
+                            <div class="input-group input-group-outline mb-3">
                                 <textarea name="keterangan" class="form-control" required>{{ old('keterangan', $kegiatanSantri->keterangan) }}</textarea>
                                 @error('keterangan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
-
 
                             <div class="d-flex justify-content-start">
                                 <button type="submit" class="btn btn-primary">Update</button>

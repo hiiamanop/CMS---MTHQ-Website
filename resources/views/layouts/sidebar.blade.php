@@ -37,6 +37,15 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Manajemen Item</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{{route('sections.index')}}">
+                    <i class="material-symbols-rounded opacity-5">table_view</i>
+                    <span class="nav-link-text ms-1">Section Item</span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Konten Utama</h6>
             </li>
             <li class="nav-item">

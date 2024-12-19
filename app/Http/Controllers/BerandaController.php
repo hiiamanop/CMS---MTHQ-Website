@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Beranda;
+use App\Models\Section;
 use Illuminate\Http\Request;
 
 class BerandaController extends Controller
@@ -11,35 +12,39 @@ class BerandaController extends Controller
     public function index()
     {
 
-        // Gunakan paginate() dengan jumlah item per halaman
-        $berandas = Beranda::paginate(10);
+        // Ambil semua data Beranda dengan pagination
+        $berandas = Beranda::with('section')->paginate(10);
+
         return view('berandas.index', compact('berandas'));
     }
 
     // Menampilkan form create
     public function create()
     {
-        return view('berandas.create');
+        $sections = Section::all(); // Mengambil semua data sections
+        return view('berandas.create', compact('sections'));
     }
 
     // Menyimpan data ke database
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
             'keterangan' => 'required|string|max:255',
         ]);
 
-        // Simpan data ke database
-        Beranda::create([
-            'nama_attribute' => $request->input('nama_attribute'),
-            'keterangan' => $request->input('keterangan'),
-        ]);
-
-        // Redirect kembali dengan pesan sukses
-        return redirect()->route('berandas.index')->with('success', 'Data berhasil ditambahkan.');
+        try {
+            Beranda::create($request->all());
+            // Gunakan session()->flash() untuk memastikan
+            session()->flash('success', 'Data berhasil ditambahkan.');
+            return redirect()->route('berandas.index');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Terjadi kesalahan saat menambahkan data.');
+            return redirect()->route('berandas.index');
+        }
     }
+
 
 
     // Menampilkan data tertentu (optional)
@@ -49,34 +54,35 @@ class BerandaController extends Controller
     }
 
     // Menampilkan form edit
-    public function edit(Beranda $beranda)
+    public function edit($id)
     {
-        return view('berandas.edit', compact('beranda'));
+        $beranda = Beranda::findOrFail($id);
+        $sections = Section::all();
+
+        return view('berandas.edit', compact('beranda', 'sections'));
     }
-
     // Update data di database
-    public function update(Request $request, Beranda $beranda)
+    public function update(Request $request, $id)
     {
-        // Validasi input
+        // Validasi data
         $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string',
+            'keterangan' => 'required|string|max:255',
         ]);
 
-        // Update data
-        $beranda->update([
-            'nama_attribute' => $request->nama_attribute,
-            'keterangan' => $request->keterangan,
-        ]);
+        $beranda = Beranda::findOrFail($id);
+        $beranda->update($request->all());
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('berandas.index')->with('success', 'Data berhasil diperbarui!');
+        return redirect()->route('berandas.index')->with('success', 'Beranda berhasil diperbarui.');
     }
 
     // Menghapus data
-    public function destroy(Beranda $beranda)
+    public function destroy($id)
     {
+        $beranda = Beranda::findOrFail($id);
         $beranda->delete();
-        return redirect()->route('berandas.index')->with('success', 'Data berhasil dihapus!');
+
+        return redirect()->route('berandas.index')->with('success', 'Beranda berhasil dihapus.');
     }
 }

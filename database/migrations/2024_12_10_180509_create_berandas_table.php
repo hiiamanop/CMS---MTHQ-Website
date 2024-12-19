@@ -13,8 +13,15 @@ return new class extends Migration
     {
         Schema::create('berandas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('section_id')
+                  ->nullable()
+                  ->constrained('sections')
+                  ->cascadeOnDelete();
             $table->string('nama_attribute');
             $table->string('keterangan');
+            $table->enum('tipe_konten', ['teks', 'gambar'])->default('teks'); // Menentukan tipe konten
+            $table->text('konten_teks')->nullable(); // Untuk menyimpan konten teks
+            $table->string('konten_gambar')->nullable(); // Untuk menyimpan path gambar
             $table->timestamps();
         });
     }

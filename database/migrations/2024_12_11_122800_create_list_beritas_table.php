@@ -13,10 +13,17 @@ return new class extends Migration
     {
         Schema::create('list_beritas', function (Blueprint $table) {
             $table->id();
-            $table->string('kategori_berita'); // Bisa diubah menjadi ENUM jika nilai kategori terbatas
+            $table->foreignId('section_id')
+                ->nullable() // Tambahkan nullable di sini
+                ->constrained('sections') // Menyebut tabel secara eksplisit
+                ->cascadeOnDelete(); // Hapus detail jika berita terkait dihapus
+            $table->enum('kategori_berita', ['berita', 'artikel'])->default('berita');
             $table->string('judul_berita');
             $table->date('tanggal_upload'); // Menggunakan tipe DATE
             $table->text('highlight_berita'); // Menggunakan TEXT untuk highlight yang lebih panjang
+            $table->enum('tipe_konten', ['teks', 'gambar'])->default('teks');
+            $table->text('konten_teks')->nullable();
+            $table->string('konten_gambar')->nullable();
             $table->timestamps();
         });
     }

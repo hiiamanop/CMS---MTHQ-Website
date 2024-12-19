@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('galeris', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('section_id')
+                  ->nullable() // Tambahkan nullable di sini
+                  ->constrained('sections') // Menyebut tabel secara eksplisit
+                  ->cascadeOnDelete(); // Hapus detail jika berita terkait dihapus
             $table->string('nama_attribute');
             $table->enum('jenis_galeri', ['kegiatan_santri', 'program_pendidikan', 'wisuda_akbar']);
             $table->string('keterangan');
-            $table->string('gambar');
+            $table->enum('tipe_konten', ['teks', 'gambar'])->default('teks');
+            $table->text('konten_teks')->nullable();
+            $table->string('konten_gambar')->nullable();
             $table->timestamps();
         });
     }

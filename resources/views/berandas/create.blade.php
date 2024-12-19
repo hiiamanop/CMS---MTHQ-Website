@@ -40,13 +40,28 @@
                         <!-- Form untuk menambah data beranda -->
                         <form action="{{ route('berandas.store') }}" method="POST">
                             @csrf
+                            <label for="section_id" class="form-label">Pilih Section</label>
                             <div class="input-group input-group-outline mb-3">
-                                <label for="nama_attribute" class="form-label">Nama Attribute</label>
+                                <select name="section_id" id="section_id" class="form-control">
+                                    <option value="">-- Pilih Section --</option>
+                                    @foreach ($sections as $section)
+                                    <option value="{{ $section->id }}">
+                                        {{ $section->item . ' - ' . $section->section }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                            <label for="nama_attribute" class="form-label">Nama Attribute</label>
+
+                            <div class="input-group input-group-outline mb-3">
                                 <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" required>
                             </div>
 
+                            <label for="keterangan" class="form-label">Keterangan</label>
                             <div class="input-group input-group-outline mb-3">
-                                <label for="keterangan" class="form-label">Keterangan</label>
+                                <textarea name="keterangan" id="keterangan" class="form-control"></textarea>
                                 <input type="text" name="keterangan" class="form-control" id="keterangan" required>
                             </div>
 

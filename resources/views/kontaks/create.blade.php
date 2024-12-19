@@ -42,15 +42,17 @@
                             @csrf
                             
                             <!-- Nama Attribute -->
+                            <label for="nama_attribute" class="form-label">Nama Attribute</label>
+
                             <div class="input-group input-group-outline mb-3">
-                                <label for="nama_attribute" class="form-label">Nama Attribute</label>
                                 <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" required>
                             </div>
 
                             <!-- Keterangan -->
+                            <label for="keterangan" class="form-label">Keterangan</label>
+
                             <div class="input-group input-group-outline mb-3">
-                                <label for="keterangan" class="form-label">Keterangan</label>
-                                <input type="text" name="keterangan" class="form-control" id="keterangan" required>
+                                <textarea type="text" name="keterangan" class="form-control" id="keterangan" required>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Simpan</button>
