@@ -28,7 +28,7 @@
 
                     <div class="card-body pb-2">
                         <!-- Form untuk mengedit berita -->
-                        <form role="form" method="POST" action="{{ route('list-beritas.update', $listBerita->id) }}" class="text-start">
+                        <form role="form" method="POST" action="{{ route('list-beritas.update', $listBerita->id) }}" class="text-start" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -61,10 +61,11 @@
                             <label for="kategori_berita" class="form-label">Kategori Berita</label>
                             <div class="input-group input-group-outline mb-3">
                                 <select name="kategori_berita" class="form-control" id="kategori_berita" required>
-                                    <option value="artikel" {{ $listBerita->kategori_berita == 'artikel' ? 'selected' : '' }}>Artikel</option>
-                                    <option value="berita" {{ $listBerita->kategori_berita == 'berita' ? 'selected' : '' }}>Berita</option>
-                                    
+                                    <option value="artikel" {{ old('kategori_berita', $listBerita->kategori_berita) == 'artikel' ? 'selected' : '' }}>Artikel</option>
+                                    <option value="berita" {{ old('kategori_berita', $listBerita->kategori_berita) == 'berita' ? 'selected' : '' }}>Berita</option>
                                 </select>
+
+
                             </div>
 
                             <!-- Tanggal Upload -->
@@ -78,6 +79,15 @@
                             <div class="input-group input-group-outline mb-3">
                                 <textarea name="highlight_berita" class="form-control" id="highlight_berita" rows="4" required>{{ old('highlight_berita', $listBerita->highlight_berita) }}</textarea>
                             </div>
+
+                            <!-- Konten Gambar -->
+                            <label for="konten_gambar" class="form-label">Konten Gambar</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <input type="file" name="konten_gambar" class="form-control" id="konten_gambar">
+                            </div>
+                            @if($listBerita->konten_gambar)
+                            <img class="mb-3" src="{{ asset('storage/' . $listBerita->konten_gambar) }}" alt="Gambar Berita" style="height: 100px;">
+                            @endif
 
                             <!-- Tombol Submit -->
                             <div class="d-flex justify-content-start">

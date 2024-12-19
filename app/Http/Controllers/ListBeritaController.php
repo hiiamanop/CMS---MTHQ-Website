@@ -3,81 +3,109 @@
 namespace App\Http\Controllers;
 
 use App\Models\ListBerita;
+use App\Models\Section;
 use Illuminate\Http\Request;
 
 class ListBeritaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar berita.
      */
     public function index()
     {
-        $listBeritas = ListBerita::paginate(10);
-        return view('list_beritas.index', compact('listBeritas'));
-    }
+        // Ambil semua data berita dengan relasi section
+        $beritas = ListBerita::with('section')->paginate(10);
 
-    public function edit($id)
-    {
-        $listBerita = ListBerita::findOrFail($id);
-        return view('list_beritas.edit', compact('listBerita'));
-    }
-
-    public function create()
-    {
-        return view('list_beritas.create');
+        return view('listberita.index', compact('beritas'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menampilkan form untuk membuat berita baru.
+     */
+    public function create()
+    {
+        $sections = Section::all(); // Ambil semua data sections
+        $kategoriBeritaOptions = ListBerita::getKategoriBeritaOptions();
+
+        return view('listberita.create', compact('sections', 'kategoriBeritaOptions'));
+    }
+
+    /**
+     * Menyimpan data berita baru ke database.
      */
     public function store(Request $request)
     {
         // Validasi input
-        $request->validate([
+        $validated = $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
             'judul_berita' => 'required|string|max:255',
-            'kategori_berita' => 'required|string',
+            'kategori_berita' => 'required|in:artikel,berita',  // This ensures the value must be either 'artikel' or 'berita'
             'tanggal_upload' => 'required|date',
-            'highlight_berita' => 'required|string',
+            'highlight_berita' => 'nullable|string',
+            'tipe_konten' => 'required|string|in:teks,gambar',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
+
+        // Menangani upload gambar jika ada
+        if ($request->hasFile('konten_gambar')) {
+            $imagePath = $request->file('konten_gambar')->store('uploads/berita', 'public');
+            $validated['konten_gambar'] = $imagePath;
+        }
 
         // Simpan data ke database
-        ListBerita::create([
-            'judul_berita' => $request->judul_berita,
-            'kategori_berita' => $request->kategori_berita,
-            'tanggal_upload' => $request->tanggal_upload,
-            'highlight_berita' => $request->highlight_berita,
-        ]);
+        ListBerita::create($validated);
 
-        // Redirect kembali dengan pesan sukses
-        return redirect()->route('list-beritas.index')->with('success', 'Berita berhasil ditambahkan!');
+        return redirect()->route('list-beritas.index')->with('success', 'Berita berhasil ditambahkan.');
     }
 
+    /**
+     * Menampilkan form untuk edit data berita.
+     */
+    public function edit(ListBerita $listBerita)
+    {
+        $sections = Section::all(); // Ambil semua data sections
+        $kategoriBeritaOptions = ListBerita::getKategoriBeritaOptions();
+
+        return view('listberita.edit', compact('listBerita', 'sections', 'kategoriBeritaOptions'));
+    }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data berita di database.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ListBerita $listBerita)
     {
-        $request->validate([
+        // Validasi input
+        $validated = $request->validate([
             'judul_berita' => 'required|string|max:255',
-            'kategori_berita' => 'required|string|max:255',
+            'kategori_berita' => 'required|in:artikel,berita',  // This ensures the value must be either 'artikel' or 'berita'
             'tanggal_upload' => 'required|date',
-            'highlight_berita' => 'required|string',
+            'highlight_berita' => 'nullable|string',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
 
-        $listBerita = ListBerita::findOrFail($id);
-        $listBerita->update($request->all());
-        // Redirect kembali dengan pesan sukses
-        return redirect()->route('list-beritas.index')->with('success', 'Berita berhasil diubah!');
+        // Menangani upload gambar jika ada
+        if ($request->hasFile('konten_gambar')) {
+            $imagePath = $request->file('konten_gambar')->store('uploads/berita', 'public');
+            $validated['konten_gambar'] = $imagePath; // Assign the image path to the validated data
+        }
+
+        // Update data di database
+        $listBerita->update($validated);
+
+        return redirect()->route('list-beritas.index')->with('success', 'Berita berhasil diperbarui.');
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * Menghapus data berita dari database.
      */
-    public function destroy($id)
+    public function destroy(ListBerita $listBerita)
     {
-        $listBerita = ListBerita::findOrFail($id);
+        // Hapus data
         $listBerita->delete();
-        return redirect()->back()->with('success', 'Berita berhasil dihapus!');
+
+        return redirect()->route('list-beritas.index')->with('success', 'Berita berhasil dihapus.');
     }
 }

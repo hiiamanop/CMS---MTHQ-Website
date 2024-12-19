@@ -41,10 +41,10 @@
 
                             {{-- Success Message --}}
                             @if(session('success'))
-                                <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
-                                    {{ session('success') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
+                            <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                             @endif
 
                             <!-- Table -->
@@ -52,30 +52,41 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">No</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Berita Id</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Section</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Attribute</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Keterangan</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Tipe Konten</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Konten Teks</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Konten Gambar</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($detailBeritas as $index => $detail)
+                                    @foreach ($detailBeritas as $index => $detailBerita)
                                     <tr>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             {{ ($detailBeritas->currentPage() - 1) * $detailBeritas->perPage() + $index + 1 }}
                                         </td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $detail->list_berita_id }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $detail->nama_attribute }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ Str::limit($detail->keterangan, 50) }}</td>
-                                        
-
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ $detailBerita->section ? $detailBerita->section->item . ' - ' . $detailBerita->section->section : 'N/A' }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $detailBerita->nama_attribute }}</td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $detailBerita->keterangan ?? 'N/A' }}</td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ ucfirst($detailBerita->tipe_konten) }}</td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $detailBerita->konten_teks ?? 'N/A' }}</td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            @if($detailBerita->konten_gambar)
+                                            <img src="{{ asset('storage/' . $detailBerita->konten_gambar) }}" alt="Gambar Detail" style="height: 50px;">
+                                            @else
+                                            N/A
+                                            @endif
+                                        </td>
                                         <td class="align-middle text-center">
-                                            <a href="{{ route('detail_beritas.edit', $detail->id) }}" class="badge badge-sm bg-gradient-warning me-1">Edit</a>
-
-                                            <form action="{{ route('detail_beritas.destroy', $detail->id) }}" method="POST" style="display:inline-block;">
+                                            <a href="{{ route('detail-beritas.edit', $detailBerita->id) }}" class="badge badge-sm bg-gradient-warning me-1">Edit</a>
+                                            <form action="{{ route('detail-beritas.destroy', $detailBerita->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="badge badge-sm bg-gradient-danger delete-btn" onclick="return confirm('Apakah Anda yakin ingin menghapus detail ini?')">Delete</button>
+                                                <button type="submit" class="badge badge-sm bg-gradient-danger delete-btn" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
                                             </form>
                                         </td>
                                     </tr>

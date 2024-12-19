@@ -8,81 +8,91 @@ use Illuminate\Http\Request;
 
 class BerandaController extends Controller
 {
-    // Menampilkan halaman index
+    /**
+     * Menampilkan daftar data Beranda.
+     */
     public function index()
     {
-
-        // Ambil semua data Beranda dengan pagination
-        $berandas = Beranda::with('section')->paginate(10);
-
-        return view('berandas.index', compact('berandas'));
+        $berandas = Beranda::with('section')->paginate(10); // Eager loading untuk relasi section
+        return view('beranda.index', compact('berandas'));
     }
 
-    // Menampilkan form create
+    /**
+     * Menampilkan form untuk membuat data baru.
+     */
     public function create()
     {
-        $sections = Section::all(); // Mengambil semua data sections
-        return view('berandas.create', compact('sections'));
+        $sections = Section::all(); // Mengambil semua data section untuk dropdown
+        return view('beranda.create', compact('sections'));
     }
 
-    // Menyimpan data ke database
+    /**
+     * Menyimpan data baru ke database.
+     */
     public function store(Request $request)
     {
-        $request->validate([
+        // Validasi input
+        $validated = $request->validate([
             'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string|max:255',
+            'keterangan' => 'required|string',
+            'tipe_konten' => 'required|string|in:teks,gambar',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        try {
-            Beranda::create($request->all());
-            // Gunakan session()->flash() untuk memastikan
-            session()->flash('success', 'Data berhasil ditambahkan.');
-            return redirect()->route('berandas.index');
-        } catch (\Exception $e) {
-            session()->flash('error', 'Terjadi kesalahan saat menambahkan data.');
-            return redirect()->route('berandas.index');
+        // Menangani upload gambar jika ada
+        if ($request->hasFile('konten_gambar')) {
+            $imagePath = $request->file('konten_gambar')->store('uploads/beranda', 'public');
+            $validated['konten_gambar'] = $imagePath;
         }
+
+        // Simpan data ke database
+        Beranda::create($validated);
+
+        return redirect()->route('berandas.index')->with('success', 'Data berhasil ditambahkan.');
     }
 
-
-
-    // Menampilkan data tertentu (optional)
-    public function show(Beranda $beranda)
+    /**
+     * Menampilkan form untuk edit data.
+     */
+    public function edit(Beranda $beranda)
     {
-        return view('beranda.show', compact('beranda'));
-    }
-
-    // Menampilkan form edit
-    public function edit($id)
-    {
-        $beranda = Beranda::findOrFail($id);
         $sections = Section::all();
-
-        return view('berandas.edit', compact('beranda', 'sections'));
+        return view('beranda.edit', compact('beranda', 'sections'));
     }
-    // Update data di database
-    public function update(Request $request, $id)
+
+    /**
+     * Memperbarui data di database.
+     */
+    public function update(Request $request, Beranda $beranda)
     {
-        // Validasi data
-        $request->validate([
+        $validated = $request->validate([
             'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string|max:255',
+            'keterangan' => 'required|string',
+            'tipe_konten' => 'required|string|in:teks,gambar',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $beranda = Beranda::findOrFail($id);
-        $beranda->update($request->all());
+        // Menangani upload gambar jika ada
+        if ($request->hasFile('konten_gambar')) {
+            $imagePath = $request->file('konten_gambar')->store('uploads/beranda', 'public');
+            $validated['konten_gambar'] = $imagePath;
+        }
 
-        return redirect()->route('berandas.index')->with('success', 'Beranda berhasil diperbarui.');
+        $beranda->update($validated);
+
+        return redirect()->route('berandas.index')->with('success', 'Data berhasil diperbarui.');
     }
 
-    // Menghapus data
-    public function destroy($id)
+    /**
+     * Menghapus data dari database.
+     */
+    public function destroy(Beranda $beranda)
     {
-        $beranda = Beranda::findOrFail($id);
         $beranda->delete();
-
-        return redirect()->route('berandas.index')->with('success', 'Beranda berhasil dihapus.');
+        return redirect()->route('berandas.index')->with('success', 'Data berhasil dihapus.');
     }
 }

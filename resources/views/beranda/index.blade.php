@@ -12,17 +12,6 @@
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Beranda</li>
                 </ol>
             </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                </div>
-                <ul class="navbar-nav d-flex align-items-center  justify-content-end">
-                    <li class="nav-item d-flex align-items-center">
-                        <a href="#" class="nav-link text-body font-weight-bold px-0">
-                            <i class="material-symbols-rounded">account_circle</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -33,38 +22,27 @@
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
                             <h6 class="text-white text-capitalize ps-3">Daftar Attribute Beranda</h6>
+                            <a href="{{ route('berandas.create') }}" class="btn btn-primary btn-sm float-end mx-3">Tambah Attribute</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
                         <div class="table-responsive p-0">
-                            <a href="{{ route('berandas.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Attribute</a>
-
-                            @if(session()->has('success'))
+                            <!-- Alert Success/Error -->
+                            @if(session('success'))
                             <script>
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: '{{ session('
-                                    success ') }}', // Hapus spasi di dalam session()
-                                    timer: 3000,
-                                    showConfirmButton: false
-                                });
+                                Swal.fire('Berhasil!', '{{ session('
+                                    success ') }}', 'success');
                             </script>
                             @endif
 
-                            @if(session()->has('error'))
+                            @if(session('error'))
                             <script>
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Gagal!',
-                                    text: '{{ session('
-                                    error ') }}', // Hapus spasi di dalam session()
-                                    timer: 3000,
-                                    showConfirmButton: false
-                                });
+                                Swal.fire('Gagal!', '{{ session('
+                                    error ') }}', 'error');
                             </script>
                             @endif
 
+                            <!-- Table -->
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
@@ -72,6 +50,9 @@
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Item - Section - Halaman</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Attribute</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Keterangan</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Tipe Konten</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Teks Konten</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Gambar Konten</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                     </tr>
                                 </thead>
@@ -86,6 +67,17 @@
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $beranda->nama_attribute }}</td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $beranda->keterangan }}</td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $beranda->tipe_konten }}</td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ $beranda->konten_teks ?? 'N/A' }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            @if($beranda->konten_gambar)
+                                            <img src="{{ asset('storage/' . $beranda->konten_gambar) }}" alt="Gambar Konten" style="height: 50px;">
+                                            @else
+                                            N/A
+                                            @endif
+                                        </td>
                                         <td class="align-middle text-center">
                                             <a href="{{ route('berandas.edit', $beranda->id) }}" class="badge badge-sm bg-gradient-warning me-1">Edit</a>
                                             <form action="{{ route('berandas.destroy', $beranda->id) }}" method="POST" style="display:inline-block;">
@@ -118,54 +110,6 @@
     </div>
 </main>
 
-@if(session()->has('success') || session()->has('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            @if(session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: '{{ session('success') }}',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            @endif
-            
-            @if(session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal!',
-                    text: '{{ session('error') }}',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            @endif
-        });
-    </script>
-@endif
-
-@section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    $(document).ready(function() {
-        $('.delete-btn').on('click', function(e) {
-            e.preventDefault();
-            var form = $(this).closest('form');
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Data akan dihapus permanen!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
-    });
-</script>
-@endsection
+
 @endsection

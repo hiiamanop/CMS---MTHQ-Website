@@ -40,8 +40,19 @@
 
                     <div class="card-body pb-2">
                         <!-- Form untuk menambah detail berita -->
-                        <form action="{{ route('detail_beritas.store') }}" method="POST">
+                        <form action="{{ route('detail_beritas.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+
+                            <!-- Pilih Section -->
+                            <label for="section_id" class="form-label">Pilih Section</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <select name="section_id" class="form-control" id="section_id" required>
+                                    <option value="">Pilih Section</option>
+                                    @foreach($sections as $section)
+                                        <option value="{{ $section->id }}">{{ $section->section->item }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
                             <!-- Pilih Berita -->
                             <label for="list_berita_id" class="form-label">Pilih Berita</label>
@@ -63,7 +74,33 @@
                             <!-- Keterangan -->
                             <label for="keterangan" class="form-label">Keterangan</label>
                             <div class="input-group input-group-outline mb-3">
-                                <textarea name="keterangan" class="form-control" id="keterangan" rows="5" required></textarea>
+                                <textarea name="keterangan" class="form-control" id="keterangan" rows="5"></textarea>
+                            </div>
+
+                            <!-- Pilih Tipe Konten -->
+                            <label for="tipe_konten" class="form-label">Tipe Konten</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <select name="tipe_konten" class="form-control" id="tipe_konten" required>
+                                    <option value="">Pilih Tipe Konten</option>
+                                    <option value="teks">Teks</option>
+                                    <option value="gambar">Gambar</option>
+                                </select>
+                            </div>
+
+                            <!-- Konten Teks -->
+                            <div class="mb-3" id="konten_teks_div" style="display:none;">
+                                <label for="konten_teks" class="form-label">Konten Teks</label>
+                                <div class="input-group input-group-outline">
+                                    <textarea name="konten_teks" class="form-control" id="konten_teks" rows="5"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Konten Gambar -->
+                            <div class="mb-3" id="konten_gambar_div" style="display:none;">
+                                <label for="konten_gambar" class="form-label">Konten Gambar</label>
+                                <div class="input-group input-group-outline">
+                                    <input type="file" name="konten_gambar" class="form-control" id="konten_gambar" accept="image/*">
+                                </div>
                             </div>
 
                             <!-- Tombol Simpan dan Kembali -->
@@ -76,4 +113,23 @@
         </div>
     </div>
 </main>
+
+<script>
+    // Script to toggle visibility of content fields based on the selected content type
+    document.getElementById('tipe_konten').addEventListener('change', function() {
+        const kontenTeksDiv = document.getElementById('konten_teks_div');
+        const kontenGambarDiv = document.getElementById('konten_gambar_div');
+        if (this.value === 'teks') {
+            kontenTeksDiv.style.display = 'block';
+            kontenGambarDiv.style.display = 'none';
+        } else if (this.value === 'gambar') {
+            kontenTeksDiv.style.display = 'none';
+            kontenGambarDiv.style.display = 'block';
+        } else {
+            kontenTeksDiv.style.display = 'none';
+            kontenGambarDiv.style.display = 'none';
+        }
+    });
+</script>
+
 @endsection

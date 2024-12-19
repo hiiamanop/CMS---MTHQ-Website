@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Halaman</a></li>
-                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Galeri</li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Berita</li>
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Tambah</li>
                 </ol>
             </nav>
@@ -22,12 +22,12 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Tambah Galeri</h6>
+                            <h6 class="text-white text-capitalize ps-3">Tambah Berita</h6>
                         </div>
                     </div>
 
                     <div class="card-body pb-2">
-                        <form action="{{ route('galeris.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('list-beritas.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <!-- Pilih Section -->
@@ -43,27 +43,33 @@
                                 </select>
                             </div>
 
-                            <!-- Nama Attribute -->
-                            <label for="nama_attribute" class="form-label">Nama Attribute</label>
+                            <!-- Judul Berita -->
+                            <label for="judul_berita" class="form-label">Judul Berita</label>
                             <div class="input-group input-group-outline mb-3">
-                                <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" required>
+                                <input type="text" name="judul_berita" class="form-control" id="judul_berita" required>
                             </div>
 
-                            <!-- Keterangan -->
-                            <label for="keterangan" class="form-label">Keterangan</label>
+                            <!-- Kategori Berita -->
+                            <label for="kategori_berita" class="form-label">Kategori Berita</label>
                             <div class="input-group input-group-outline mb-3">
-                                <textarea name="keterangan" id="keterangan" class="form-control" rows="3"></textarea>
-                            </div>
-
-                            <!-- Jenis Galeri -->
-                            <label for="jenis_galeri" class="form-label">Jenis Galeri</label>
-                            <div class="input-group input-group-outline mb-3">
-                                <select name="jenis_galeri" id="jenis_galeri" class="form-control">
-                                    <option value="">-- Pilih Jenis Galeri --</option>
-                                    @foreach ($jenisGaleriOptions as $option)
+                                <select name="kategori_berita" id="kategori_berita" class="form-control">
+                                    <option value="">-- Pilih Kategori Berita --</option>
+                                    @foreach ($kategoriBeritaOptions as $option)
                                         <option value="{{ $option }}">{{ $option }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+
+                            <!-- Tanggal Upload -->
+                            <label for="tanggal_upload" class="form-label">Tanggal Upload</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <input type="date" name="tanggal_upload" class="form-control" id="tanggal_upload" required>
+                            </div>
+
+                            <!-- Highlight Berita -->
+                            <label for="highlight_berita" class="form-label">Highlight Berita</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <textarea name="highlight_berita" id="highlight_berita" class="form-control" rows="3"></textarea>
                             </div>
 
                             <!-- Tipe Konten -->
@@ -94,7 +100,7 @@
 
                             <!-- Tombol Simpan dan Kembali -->
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('galeris.index') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('list-beritas.index') }}" class="btn btn-secondary">Kembali</a>
                         </form>
                     </div>
                 </div>
