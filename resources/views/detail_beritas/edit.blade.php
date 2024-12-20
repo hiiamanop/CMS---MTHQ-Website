@@ -28,7 +28,7 @@
 
                     <div class="card-body pb-2">
                         <!-- Form untuk mengedit detail berita -->
-                        <form role="form" method="POST" action="{{ route('detail_beritas.update', $detailBerita->id) }}" class="text-start">
+                        <form role="form" method="POST" action="{{ route('detail-beritas.update', $detailBerita->id) }}" class="text-start" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -51,15 +51,30 @@
                             </div>
                             @endif
 
+                            <!-- Section -->
+                            <label for="section_id" class="form-label">Pilih Section</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <select name="section_id" class="form-control" id="section_id">
+                                    <option value="" selected>-- Pilih Section --</option>
+                                    @foreach($sections as $section)
+                                    <option value="{{ $section->id }}"
+                                        {{ $detailBerita->section_id == $section->id ? 'selected' : '' }}>
+                                        {{ $section->item }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <!-- Pilih Berita -->
                             <label for="list_berita_id" class="form-label">Pilih Berita</label>
                             <div class="input-group input-group-outline mb-3">
-                                <select name="list_berita_id" class="form-control" id="list_berita_id" required>
+                                <select name="list_berita_id" class="form-control" id="list_berita_id">
+                                    <option value="" selected>-- Pilih Berita --</option>
                                     @foreach($listBeritas as $berita)
-                                        <option value="{{ $berita->id }}" 
-                                            {{ $detailBerita->list_berita_id == $berita->id ? 'selected' : '' }}>
-                                            {{ $berita->judul_berita }}
-                                        </option>
+                                    <option value="{{ $berita->id }}"
+                                        {{ $detailBerita->list_berita_id == $berita->id ? 'selected' : '' }}>
+                                        {{ $berita->judul_berita }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -67,20 +82,32 @@
                             <!-- Nama Attribute -->
                             <label for="nama_attribute" class="form-label">Nama Attribute</label>
                             <div class="input-group input-group-outline mb-3">
-                                <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" 
+                                <input type="text" name="nama_attribute" class="form-control" id="nama_attribute"
                                     value="{{ old('nama_attribute', $detailBerita->nama_attribute) }}" required>
                             </div>
 
-                            <!-- Keterangan -->
-                            <label for="keterangan" class="form-label">Keterangan</label>
+                            <!-- Konten Teks -->
+                            <label for="konten_teks" class="form-label">Konten Teks</label>
                             <div class="input-group input-group-outline mb-3">
-                                <textarea name="keterangan" class="form-control" id="keterangan" rows="4" required>{{ old('keterangan', $detailBerita->keterangan) }}</textarea>
+                                <textarea name="konten_teks" class="form-control" id="konten_teks" rows="4">{{ old('konten_teks', $detailBerita->konten_teks) }}</textarea>
                             </div>
+
+                            <!-- Konten Gambar -->
+                            <label for="konten_gambar" class="form-label">Konten Gambar</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <input type="file" name="konten_gambar" class="form-control" id="konten_gambar" accept="image/*">
+                            </div>
+                            @if($detailBerita->konten_gambar)
+                            <div class="mb-3">
+                                <img src="{{ asset('storage/'.$detailBerita->konten_gambar) }}" alt="Konten Gambar" width="150" class="img-fluid">
+                                <p>Current Image</p>
+                            </div>
+                            @endif
 
                             <!-- Tombol Submit -->
                             <div class="d-flex justify-content-start">
                                 <button type="submit" class="btn btn-primary">Update</button>
-                                <a href="{{ route('detail_beritas.index') }}" class="btn btn-secondary ms-2">Kembali</a>
+                                <a href="{{ route('detail-beritas.index') }}" class="btn btn-secondary ms-2">Kembali</a>
                             </div>
                         </form>
                     </div>

@@ -17,7 +17,6 @@ class Galeri extends Model
         'section_id',
         'nama_attribute',
         'jenis_galeri',
-        'keterangan',
         'tipe_konten',
         'konten_teks',
         'konten_gambar'

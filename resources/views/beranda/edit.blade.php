@@ -12,17 +12,6 @@
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Edit </li>
                 </ol>
             </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                </div>
-                <ul class="navbar-nav d-flex align-items-center justify-content-end">
-                    <li class="nav-item d-flex align-items-center">
-                        <a href="#" class="nav-link text-body font-weight-bold px-0">
-                            <i class="material-symbols-rounded">account_circle</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -48,25 +37,25 @@
                         </div>
                         @endif
 
-                        <form action="{{ route('berandas.update', $beranda->id) }}" method="POST">
+                        <form action="{{ route('berandas.update', $beranda->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
+                            <!-- Section -->
                             <label for="section_id" class="form-label">Pilih Section</label>
                             <div class="input-group input-group-outline mb-3">
                                 <select name="section_id" id="section_id" class="form-control">
                                     <option value="">-- Pilih Section --</option>
                                     @foreach ($sections as $section)
-                                    <option value="{{ $section->id }}">
+                                    <option value="{{ $section->id }}" {{ $beranda->section_id == $section->id ? 'selected' : '' }}>
                                         {{ $section->item . ' - ' . $section->section }}
                                     </option>
                                     @endforeach
-                                </select required>
+                                </select>
                             </div>
-                            
+
                             <!-- Nama Attribute -->
                             <label for="nama_attribute" class="form-label">Nama Attribute</label>
-
                             <div class="input-group input-group-outline mb-3">
                                 <input type="text" name="nama_attribute" id="nama_attribute" class="form-control @error('nama_attribute') is-invalid @enderror" value="{{ old('nama_attribute', $beranda->nama_attribute) }}" placeholder="Masukkan Nama Attribute">
                                 @error('nama_attribute')
@@ -74,49 +63,53 @@
                                 @enderror
                             </div>
 
-                            <!-- Keterangan -->
-                            <label for="nama_attribute" class="form-label">Keterangan</label>
-
+                            <!-- Tipe Konten -->
+                            <label for="tipe_konten" class="form-label">Tipe Konten</label>
                             <div class="input-group input-group-outline mb-3">
-                                <textarea name="keterangan" id="keterangan" class="form-control @error('keterangan') is-invalid @enderror" rows="4" placeholder="Masukkan Keterangan">{{ old('keterangan', $beranda->keterangan) }}</textarea>
-                                @error('keterangan')
+                                <select name="tipe_konten" id="tipe_konten" class="form-control @error('tipe_konten') is-invalid @enderror">
+                                    <option value="teks" {{ $beranda->tipe_konten == 'teks' ? 'selected' : '' }}>Teks</option>
+                                    <option value="gambar" {{ $beranda->tipe_konten == 'gambar' ? 'selected' : '' }}>Gambar</option>
+                                </select>
+                                @error('tipe_konten')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            <!-- Konten Teks -->
+                            <label for="konten_teks" class="form-label">Konten Teks</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <textarea name="konten_teks" id="konten_teks" class="form-control @error('konten_teks') is-invalid @enderror" placeholder="Masukkan Konten Teks">{{ old('konten_teks', $beranda->konten_teks) }}</textarea>
+                                @error('konten_teks')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Konten Gambar -->
+                            <label for="konten_gambar" class="form-label">Konten Gambar</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <input type="file" name="konten_gambar" id="konten_gambar" class="form-control @error('konten_gambar') is-invalid @enderror">
+                                @error('konten_gambar')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            @if ($beranda->konten_gambar)
+                            <div class="mb-3">
+                                <label class="form-label">Gambar Saat Ini:</label><br>
+                                <img src="{{ asset('storage/' . $beranda->konten_gambar) }}" alt="Gambar Saat Ini" width="150" class="img-thumbnail">
+                            </div>
+                            @endif
+
+                            <!-- Submit -->
                             <div class="d-flex justify-content-start">
                                 <button type="submit" class="btn btn-primary">Update</button>
-                                <a href="{{ route('kegiatan_santris.index') }}" class="btn btn-secondary ms-2">Kembali</a>
+                                <a href="{{ route('berandas.index') }}" class="btn btn-secondary ms-2">Kembali</a>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="footer py-4">
-            <div class="container-fluid">
-                <div class="row align-items-center justify-content-lg-between">
-                    <div class="col-lg-6 mb-lg-0 mb-4">
-                        <div class="copyright text-center text-sm text-muted text-lg-start">
-                            © <script>
-                                document.write(new Date().getFullYear())
-                            </script>,
-                            <a href="https://mhtq.com" class="font-weight-bold" target="_blank">Copyright Mahad MHTQ</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                            <li class="nav-item">
-                                <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">MHTQ.com</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
-    <!-- End Main Content -->
 </main>
 @endsection

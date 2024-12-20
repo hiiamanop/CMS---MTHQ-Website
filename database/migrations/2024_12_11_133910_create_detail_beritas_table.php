@@ -22,7 +22,6 @@ return new class extends Migration
                   ->constrained('list_beritas') // Menyebut tabel secara eksplisit
                   ->cascadeOnDelete(); // Hapus detail jika berita terkait dihapus
             $table->string('nama_attribute'); // Perbaikan nama kolom
-            $table->string('keterangan');
             $table->text('konten_teks')->nullable();
             $table->string('konten_gambar')->nullable();
             $table->timestamps();

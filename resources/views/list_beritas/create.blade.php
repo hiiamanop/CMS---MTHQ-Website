@@ -2,7 +2,6 @@
 
 @section('content')
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
-    <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
@@ -14,7 +13,6 @@
             </nav>
         </div>
     </nav>
-    <!-- End Navbar -->
 
     <div class="container-fluid py-2">
         <div class="row">
@@ -25,20 +23,30 @@
                             <h6 class="text-white text-capitalize ps-3">Tambah Berita</h6>
                         </div>
                     </div>
-
                     <div class="card-body pb-2">
-                        <form action="{{ route('list-beritas.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('list_beritas.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
-                            <!-- Pilih Section -->
+                            <!-- Section -->
                             <label for="section_id" class="form-label">Pilih Section</label>
                             <div class="input-group input-group-outline mb-3">
-                                <select name="section_id" id="section_id" class="form-control">
+                                <select name="section_id" id="section_id" class="form-control" required>
                                     <option value="">-- Pilih Section --</option>
                                     @foreach ($sections as $section)
-                                        <option value="{{ $section->id }}">
-                                            {{ $section->item . ' - ' . $section->section }}
-                                        </option>
+                                    <option value="{{ $section->id }}">
+                                        {{ $section->item . ' - ' . $section->section }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Kategori Berita -->
+                            <label for="kategori_berita" class="form-label">Kategori Berita</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <select name="kategori_berita" id="kategori_berita" class="form-control" required>
+                                    <option value="">-- Pilih Kategori Berita --</option>
+                                    @foreach ($kategoriOptions as $option)
+                                    <option value="{{ $option }}">{{ $option }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -46,36 +54,25 @@
                             <!-- Judul Berita -->
                             <label for="judul_berita" class="form-label">Judul Berita</label>
                             <div class="input-group input-group-outline mb-3">
-                                <input type="text" name="judul_berita" class="form-control" id="judul_berita" required>
-                            </div>
-
-                            <!-- Kategori Berita -->
-                            <label for="kategori_berita" class="form-label">Kategori Berita</label>
-                            <div class="input-group input-group-outline mb-3">
-                                <select name="kategori_berita" id="kategori_berita" class="form-control">
-                                    <option value="">-- Pilih Kategori Berita --</option>
-                                    @foreach ($kategoriBeritaOptions as $option)
-                                        <option value="{{ $option }}">{{ $option }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="judul_berita" id="judul_berita" class="form-control" required>
                             </div>
 
                             <!-- Tanggal Upload -->
                             <label for="tanggal_upload" class="form-label">Tanggal Upload</label>
                             <div class="input-group input-group-outline mb-3">
-                                <input type="date" name="tanggal_upload" class="form-control" id="tanggal_upload" required>
+                                <input type="date" name="tanggal_upload" id="tanggal_upload" class="form-control" required>
                             </div>
 
-                            <!-- Highlight Berita -->
+                            <!-- Highlight -->
                             <label for="highlight_berita" class="form-label">Highlight Berita</label>
                             <div class="input-group input-group-outline mb-3">
-                                <textarea name="highlight_berita" id="highlight_berita" class="form-control" rows="3"></textarea>
+                                <textarea name="highlight_berita" id="highlight_berita" class="form-control" rows="3" required></textarea>
                             </div>
 
                             <!-- Tipe Konten -->
                             <label for="tipe_konten" class="form-label">Tipe Konten</label>
                             <div class="input-group input-group-outline mb-3">
-                                <select name="tipe_konten" id="tipe_konten" class="form-control" onchange="toggleKontenFields()">
+                                <select name="tipe_konten" id="tipe_konten" class="form-control" onchange="toggleKontenFields()" required>
                                     <option value="">-- Pilih Tipe Konten --</option>
                                     <option value="teks">Teks</option>
                                     <option value="gambar">Gambar</option>
@@ -93,14 +90,12 @@
                             <!-- Konten Gambar -->
                             <div id="konten_gambar_field" style="display: none;">
                                 <label for="konten_gambar" class="form-label">Upload Gambar</label>
-                                <div class="input-group input-group-outline mb-3">
-                                    <input type="file" name="konten_gambar" id="konten_gambar" class="form-control">
-                                </div>
+                                <input type="file" name="konten_gambar" id="konten_gambar" class="form-control">
                             </div>
 
-                            <!-- Tombol Simpan dan Kembali -->
+                            <!-- Tombol -->
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('list-beritas.index') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('list_beritas.index') }}" class="btn btn-secondary">Kembali</a>
                         </form>
                     </div>
                 </div>
@@ -108,43 +103,17 @@
         </div>
     </div>
 
-    <!-- Script Toggle Input Berdasarkan Tipe Konten -->
     <script>
         function toggleKontenFields() {
             const tipeKonten = document.getElementById('tipe_konten').value;
-            const teksField = document.getElementById('konten_teks_field');
-            const gambarField = document.getElementById('konten_gambar_field');
-
-            teksField.style.display = 'none';
-            gambarField.style.display = 'none';
-
-            if (tipeKonten === 'teks') {
-                teksField.style.display = 'block';
-            } else if (tipeKonten === 'gambar') {
-                gambarField.style.display = 'block';
-            }
+            document.getElementById('konten_teks_field').style.display = tipeKonten === 'teks' ? 'block' : 'none';
+            document.getElementById('konten_gambar_field').style.display = tipeKonten === 'gambar' ? 'block' : 'none';
         }
     </script>
 
-    <!-- Script Notifikasi Sukses -->
     @if(session('success'))
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if ("Notification" in window) {
-                Notification.requestPermission().then(function(permission) {
-                    if (permission === "granted") {
-                        new Notification("Sukses", {
-                            body: "{{ session('success') }}",
-                            icon: "/path/to/your/icon.png"
-                        });
-                    } else {
-                        alert("{{ session('success') }}");
-                    }
-                });
-            } else {
-                alert("{{ session('success') }}");
-            }
-        });
+        alert("{{ session('success') }}");
     </script>
     @endif
 </main>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProgramBahasa;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProgramBahasaController extends Controller
 {
@@ -12,7 +14,7 @@ class ProgramBahasaController extends Controller
      */
     public function index()
     {
-        $programBahasas = ProgramBahasa::paginate(10);
+        $programBahasas = ProgramBahasa::with('section')->paginate(10);
         return view('program_bahasas.index', compact('programBahasas'));
     }
 
@@ -21,7 +23,8 @@ class ProgramBahasaController extends Controller
      */
     public function create()
     {
-        return view('program_bahasas.create');
+        $sections = Section::all();
+        return view('program_bahasas.create', compact('sections'));
     }
 
     /**
@@ -29,25 +32,28 @@ class ProgramBahasaController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string',
+            'tipe_konten' => 'required|in:teks,gambar',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|max:2048',
         ]);
 
-        // Simpan ke database
-        ProgramBahasa::create($request->all());
+        // Handle image upload if exists
+        if ($request->hasFile('konten_gambar')) {
+            $path = $request->file('konten_gambar')->store('images', 'public');
+        }
 
-        return redirect()->route('program_bahasas.index')
-                         ->with('success', 'Program Bahasa berhasil ditambahkan.');
-    }
+        ProgramBahasa::create([
+            'section_id' => $request->section_id,
+            'nama_attribute' => $request->nama_attribute,
+            'tipe_konten' => $request->tipe_konten,
+            'konten_teks' => $request->konten_teks,
+            'konten_gambar' => $path ?? null,
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ProgramBahasa $programBahasa)
-    {
-        return view('program_bahasas.show', compact('programBahasa'));
+        return redirect()->route('program_bahasas.index')->with('success', 'Program Bahasa created successfully.');
     }
 
     /**
@@ -55,7 +61,8 @@ class ProgramBahasaController extends Controller
      */
     public function edit(ProgramBahasa $programBahasa)
     {
-        return view('program_bahasas.edit', compact('programBahasa'));
+        $sections = Section::all();
+        return view('program_bahasas.edit', compact('programBahasa', 'sections'));
     }
 
     /**
@@ -63,17 +70,32 @@ class ProgramBahasaController extends Controller
      */
     public function update(Request $request, ProgramBahasa $programBahasa)
     {
-        // Validasi input
         $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string',
+            'tipe_konten' => 'required|in:teks,gambar',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|max:2048',
         ]);
 
-        // Update data
-        $programBahasa->update($request->all());
+        // Handle image upload if exists
+        if ($request->hasFile('konten_gambar')) {
+            // Delete old image if exists
+            if ($programBahasa->konten_gambar) {
+                Storage::delete('public/' . $programBahasa->konten_gambar);
+            }
+            $path = $request->file('konten_gambar')->store('images', 'public');
+        }
 
-        return redirect()->route('program_bahasas.index')
-                         ->with('success', 'Program Bahasa berhasil diperbarui.');
+        $programBahasa->update([
+            'section_id' => $request->section_id,
+            'nama_attribute' => $request->nama_attribute,
+            'tipe_konten' => $request->tipe_konten,
+            'konten_teks' => $request->konten_teks,
+            'konten_gambar' => $path ?? $programBahasa->konten_gambar,
+        ]);
+
+        return redirect()->route('program_bahasas.index')->with('success', 'Program Bahasa updated successfully.');
     }
 
     /**
@@ -81,9 +103,13 @@ class ProgramBahasaController extends Controller
      */
     public function destroy(ProgramBahasa $programBahasa)
     {
+        // Delete image if exists
+        if ($programBahasa->konten_gambar) {
+            Storage::delete('public/' . $programBahasa->konten_gambar);
+        }
+
         $programBahasa->delete();
 
-        return redirect()->route('program_bahasas.index')
-                         ->with('success', 'Program Bahasa berhasil dihapus.');
+        return redirect()->route('program_bahasas.index')->with('success', 'Program Bahasa deleted successfully.');
     }
 }

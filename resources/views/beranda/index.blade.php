@@ -49,7 +49,7 @@
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">No</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Item - Section - Halaman</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Attribute</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Keterangan</th>
+                                        
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Tipe Konten</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Teks Konten</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Gambar Konten</th>
@@ -66,7 +66,6 @@
                                             {{ $beranda->section ? $beranda->section->item . ' - ' . $beranda->section->section : 'N/A' }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $beranda->nama_attribute }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $beranda->keterangan }}</td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $beranda->tipe_konten }}</td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             {{ $beranda->konten_teks ?? 'N/A' }}

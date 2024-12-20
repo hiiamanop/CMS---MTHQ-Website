@@ -10,13 +10,13 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link bg-gradient-dark text-white" href="{{route('dashboard')}}">
+                <a class="nav-link text-dark" href="{{route('dashboard')}}">
                     <i class="material-symbols-rounded opacity-5">dashboard</i>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">MHTQ</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">MTHQ</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark" href="{{route('administrators.index')}}">
@@ -24,12 +24,12 @@
                     <span class="nav-link-text ms-1">Administrator MHTQ</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link text-dark" href="{{route('warga.index')}}">
                     <i class="material-symbols-rounded opacity-5">person</i>
                     <span class="nav-link-text ms-1">Jumlah Warga</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link text-dark" href="{{route('roles.index')}}">
                     <i class="material-symbols-rounded opacity-5">person</i>
@@ -46,7 +46,7 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Konten Utama</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Halaman Utama</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-dark" href="{{route('berandas.index')}}">
@@ -56,7 +56,7 @@
             </li>
 
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link text-dark" href="{{route('kegiatan_santris.index')}}">
                     <i class="material-symbols-rounded opacity-5">table_view</i>
                     <span class="nav-link-text ms-1">Kegiatan Santri</span>
@@ -72,6 +72,28 @@
                 <a class="nav-link text-dark" href="{{route('kontaks.index')}}">
                     <i class="material-symbols-rounded opacity-5">table_view</i>
                     <span class="nav-link-text ms-1">Kontak</span>
+                </a>
+            </li> -->
+
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Publikasi</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{{route('galeris.index')}}">
+                    <i class="material-symbols-rounded opacity-5">table_view</i>
+                    <span class="nav-link-text ms-1">Galeri</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{{route('list_beritas.index')}}">
+                    <i class="material-symbols-rounded opacity-5">table_view</i>
+                    <span class="nav-link-text ms-1">List Berita</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{{route('detail-beritas.index')}}">
+                    <i class="material-symbols-rounded opacity-5">table_view</i>
+                    <span class="nav-link-text ms-1">Detail Berita</span>
                 </a>
             </li>
 
@@ -133,28 +155,8 @@
                     <span class="nav-link-text ms-1">Program Wirausaha</span>
                 </a>
             </li>
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Publikasi</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="{{route('galeris.index')}}">
-                    <i class="material-symbols-rounded opacity-5">table_view</i>
-                    <span class="nav-link-text ms-1">Galeri</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="{{route('list-beritas.index')}}">
-                    <i class="material-symbols-rounded opacity-5">table_view</i>
-                    <span class="nav-link-text ms-1">List Berita</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" href="{{route('detail_beritas.index')}}">
-                    <i class="material-symbols-rounded opacity-5">table_view</i>
-                    <span class="nav-link-text ms-1">Detail Berita</span>
-                </a>
-            </li>
-            <li class="nav-item mt-3">
+
+            <!-- <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Tentang</h6>
             </li>
             <li class="nav-item">
@@ -192,7 +194,7 @@
                     <i class="material-symbols-rounded opacity-5">table_view</i>
                     <span class="nav-link-text ms-1">Kalender Akademik</span>
                 </a>
-            </li>
+            </li> -->
         </ul>
     </div>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
@@ -206,39 +208,42 @@
         </div>
     </div>
 
-      <!-- Add this script at the bottom of your sidebar -->
+    <!-- Add this script at the bottom of your sidebar -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Find active menu item
-        const activeItem = document.querySelector('.nav-link.active');
-        if (activeItem) {
-            // Scroll the active item into view with smooth behavior
-            activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        
-        // Add click handlers to all nav links
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Remove active class from all links
-                navLinks.forEach(l => l.classList.remove('active', 'bg-gradient-dark', 'text-white'));
-                
-                // Add active class to clicked link
-                this.classList.add('active', 'bg-gradient-dark', 'text-white');
-                
-                // Store active menu item in localStorage
-                localStorage.setItem('activeMenu', this.getAttribute('href'));
-            });
-        });
-        
-        // Check localStorage on page load
-        const storedActiveMenu = localStorage.getItem('activeMenu');
-        if (storedActiveMenu) {
-            const storedLink = document.querySelector(`a[href="${storedActiveMenu}"]`);
-            if (storedLink) {
-                storedLink.classList.add('active', 'bg-gradient-dark', 'text-white');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find active menu item
+            const activeItem = document.querySelector('.nav-link.active');
+            if (activeItem) {
+                // Scroll the active item into view with smooth behavior
+                activeItem.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
             }
-        }
-    });
+
+            // Add click handlers to all nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Remove active class from all links
+                    navLinks.forEach(l => l.classList.remove('active', 'bg-gradient-dark', 'text-white'));
+
+                    // Add active class to clicked link
+                    this.classList.add('active', 'bg-gradient-dark', 'text-white');
+
+                    // Store active menu item in localStorage
+                    localStorage.setItem('activeMenu', this.getAttribute('href'));
+                });
+            });
+
+            // Check localStorage on page load
+            const storedActiveMenu = localStorage.getItem('activeMenu');
+            if (storedActiveMenu) {
+                const storedLink = document.querySelector(`a[href="${storedActiveMenu}"]`);
+                if (storedLink) {
+                    storedLink.classList.add('active', 'bg-gradient-dark', 'text-white');
+                }
+            }
+        });
     </script>
 </aside>

@@ -51,7 +51,7 @@
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Section</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Attribute</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Jenis Galeri</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Keterangan</th>
+                                        
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Tipe Konten</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Gambar</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
@@ -68,7 +68,7 @@
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $galeri->nama_attribute }}</td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ ucfirst(str_replace('_', ' ', $galeri->jenis_galeri)) }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $galeri->keterangan }}</td>
+                                        
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $galeri->tipe_konten }}</td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             @if($galeri->konten_gambar)

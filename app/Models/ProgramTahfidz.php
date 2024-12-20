@@ -14,7 +14,6 @@ class ProgramTahfidz extends Model
     protected $fillable = [
         'section_id', 
         'nama_attribute',
-        'keterangan',
         'tipe_konten',
         'konten_teks',
         'konten_gambar'

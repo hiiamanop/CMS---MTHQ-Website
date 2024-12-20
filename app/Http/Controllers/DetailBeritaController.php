@@ -6,108 +6,93 @@ use App\Models\DetailBerita;
 use App\Models\ListBerita;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DetailBeritaController extends Controller
 {
-    /**
-     * Menampilkan daftar detail berita.
-     */
+    // Menampilkan semua data Detail Berita
     public function index()
     {
-        // Ambil semua data detail berita dengan relasi yang diperlukan
-        $detailBeritas = DetailBerita::with(['listBerita', 'section'])->paginate(10);
-
-        return view('detailberita.index', compact('detailBeritas'));
+        $detailBeritas = DetailBerita::with(['section', 'listBerita'])->paginate(10);
+        return view('detail_beritas.index', compact('detailBeritas'));
     }
 
-    /**
-     * Menampilkan form untuk membuat detail berita baru.
-     */
+    // Menampilkan form tambah data
     public function create()
     {
-        $sections = Section::all(); // Ambil semua data sections
-        $listBeritas = ListBerita::all(); // Ambil semua data list_beritas
-
-        return view('detailberita.create', compact('sections', 'listBeritas'));
+        $sections = Section::all();
+        $listBeritas = ListBerita::all();
+        return view('detail_beritas.create', compact('sections', 'listBeritas'));
     }
 
-    /**
-     * Menyimpan data detail berita baru ke database.
-     */
+    // Menyimpan data baru ke database
     public function store(Request $request)
     {
-        // Validasi input
-        $validated = $request->validate([
-            'section_id' => 'required|exists:sections,id',
-            'list_berita_id' => 'required|exists:list_beritas,id',
+        $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
+            'list_berita_id' => 'nullable|exists:list_beritas,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'nullable|string',
-            'tipe_konten' => 'required|string|in:teks,gambar',
             'konten_teks' => 'nullable|string',
-            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'konten_gambar' => 'nullable|image|max:2048',
         ]);
 
-        // Menangani upload gambar jika ada
+        $data = $request->all();
+
+        // Handle Upload Gambar
         if ($request->hasFile('konten_gambar')) {
-            $imagePath = $request->file('konten_gambar')->store('uploads/detail_berita', 'public');
-            $validated['konten_gambar'] = $imagePath;
+            $data['konten_gambar'] = $request->file('konten_gambar')->store('konten_gambar', 'public');
         }
 
-        // Simpan data ke database
-        DetailBerita::create($validated);
+        DetailBerita::create($data);
 
-        return redirect()->route('detail-beritas.index')->with('success', 'Detail Berita berhasil ditambahkan.');
+        return redirect()->route('detail-beritas.index')->with('success', 'Detail berita berhasil ditambahkan.');
     }
 
-    /**
-     * Menampilkan form untuk edit data detail berita.
-     */
+    // Menampilkan form edit
     public function edit(DetailBerita $detailBerita)
     {
-        $sections = Section::all(); // Ambil semua data sections
-        $listBeritas = ListBerita::all(); // Ambil semua data list_beritas
-
-        return view('detailberita.edit', compact('detailBerita', 'sections', 'listBeritas'));
+        $sections = Section::all();
+        $listBeritas = ListBerita::all();
+        return view('detail_beritas.edit', compact('detailBerita', 'sections', 'listBeritas'));
     }
 
-    /**
-     * Memperbarui data detail berita di database.
-     */
+    // Menyimpan perubahan data
     public function update(Request $request, DetailBerita $detailBerita)
     {
-        // Validasi input
-        $validated = $request->validate([
-            'section_id' => 'required|exists:sections,id',
-            'list_berita_id' => 'required|exists:list_beritas,id',
+        $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
+            'list_berita_id' => 'nullable|exists:list_beritas,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'nullable|string',
-            'tipe_konten' => 'required|string|in:teks,gambar',
             'konten_teks' => 'nullable|string',
-            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'konten_gambar' => 'nullable|image|max:2048',
         ]);
 
-        // Menangani upload gambar jika ada
+        $data = $request->all();
+
+        // Handle Upload Gambar
         if ($request->hasFile('konten_gambar')) {
-            $imagePath = $request->file('konten_gambar')->store('uploads/detail_berita', 'public');
-            $validated['konten_gambar'] = $imagePath; // Assign the image path to the validated data
+            // Hapus gambar lama jika ada
+            if ($detailBerita->konten_gambar) {
+                Storage::disk('public')->delete($detailBerita->konten_gambar);
+            }
+
+            $data['konten_gambar'] = $request->file('konten_gambar')->store('konten_gambar', 'public');
         }
 
-        // Update data di database
-        $detailBerita->update($validated);
+        $detailBerita->update($data);
 
-        return redirect()->route('detail-beritas.index')->with('success', 'Detail Berita berhasil diperbarui.');
+        return redirect()->route('detail-beritas.index')->with('success', 'Detail berita berhasil diperbarui.');
     }
 
-    /**
-     * Menghapus data detail berita dari database.
-     */
+    // Menghapus data
     public function destroy(DetailBerita $detailBerita)
     {
-        
+        if ($detailBerita->konten_gambar) {
+            Storage::disk('public')->delete($detailBerita->konten_gambar);
+        }
 
-        // Hapus data
         $detailBerita->delete();
 
-        return redirect()->route('detail-beritas.index')->with('success', 'Detail Berita berhasil dihapus.');
+        return redirect()->route('detail-beritas.index')->with('success', 'Detail berita berhasil dihapus.');
     }
 }

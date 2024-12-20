@@ -35,7 +35,6 @@ class BerandaController extends Controller
         $validated = $request->validate([
             'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string',
             'tipe_konten' => 'required|string|in:teks,gambar',
             'konten_teks' => 'nullable|string',
             'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -70,7 +69,6 @@ class BerandaController extends Controller
         $validated = $request->validate([
             'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string',
             'tipe_konten' => 'required|string|in:teks,gambar',
             'konten_teks' => 'nullable|string',
             'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',

@@ -36,9 +36,9 @@
                                 <select name="section_id" id="section_id" class="form-control">
                                     <option value="">-- Pilih Section --</option>
                                     @foreach ($sections as $section)
-                                        <option value="{{ $section->id }}">
-                                            {{ $section->item . ' - ' . $section->section }}
-                                        </option>
+                                    <option value="{{ $section->id }}">
+                                        {{ $section->item . ' - ' . $section->section }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -49,19 +49,13 @@
                                 <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" required>
                             </div>
 
-                            <!-- Keterangan -->
-                            <label for="keterangan" class="form-label">Keterangan</label>
-                            <div class="input-group input-group-outline mb-3">
-                                <textarea name="keterangan" id="keterangan" class="form-control" rows="3"></textarea>
-                            </div>
-
                             <!-- Jenis Galeri -->
                             <label for="jenis_galeri" class="form-label">Jenis Galeri</label>
                             <div class="input-group input-group-outline mb-3">
                                 <select name="jenis_galeri" id="jenis_galeri" class="form-control">
                                     <option value="">-- Pilih Jenis Galeri --</option>
                                     @foreach ($jenisGaleriOptions as $option)
-                                        <option value="{{ $option }}">{{ $option }}</option>
+                                    <option value="{{ $option }}">{{ $option }}</option>
                                     @endforeach
                                 </select>
                             </div>

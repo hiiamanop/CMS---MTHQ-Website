@@ -59,7 +59,6 @@ use App\Http\Controllers\SectionController;
 
 Route::resource('sections', SectionController::class);
 
-
 use App\Http\Controllers\BerandaController;
 
 Route::resource('berandas', BerandaController::class);
@@ -118,11 +117,11 @@ Route::resource('galeris', GaleriController::class);
 
 use App\Http\Controllers\ListBeritaController;
 
-Route::resource('list-beritas', ListBeritaController::class);
+Route::resource('list_beritas', ListBeritaController::class);
 
 use App\Http\Controllers\DetailBeritaController;
 
-Route::resource('detail_beritas', DetailBeritaController::class);
+Route::resource('detail-beritas', DetailBeritaController::class);
 
 use App\Http\Controllers\TentangMhtqPendiriController;
 

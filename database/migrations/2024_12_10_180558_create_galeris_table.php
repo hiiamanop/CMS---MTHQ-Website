@@ -19,7 +19,6 @@ return new class extends Migration
                   ->cascadeOnDelete(); // Hapus detail jika berita terkait dihapus
             $table->string('nama_attribute');
             $table->enum('jenis_galeri', ['kegiatan_santri', 'program_pendidikan', 'wisuda_akbar']);
-            $table->string('keterangan');
             $table->enum('tipe_konten', ['teks', 'gambar'])->default('teks');
             $table->text('konten_teks')->nullable();
             $table->string('konten_gambar')->nullable();

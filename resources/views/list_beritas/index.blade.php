@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
@@ -15,6 +14,7 @@
         </div>
     </nav>
     <!-- End Navbar -->
+
     <div class="container-fluid py-2">
         <div class="row">
             <div class="col-12">
@@ -22,12 +22,11 @@
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
                             <h6 class="text-white text-capitalize ps-3">Daftar List Berita</h6>
-                            <a href="{{ route('list-beritas.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Berita</a>
+                            <a href="{{ route('list_beritas.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Berita</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
                         <div class="table-responsive p-0">
-
                             <!-- Alert Success/Error -->
                             @if(session('success'))
                             <script>
@@ -49,13 +48,13 @@
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">No</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Section</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Judul Berita</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Kategori Berita</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Kategori</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Judul</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Tanggal Upload</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Highlight Berita</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Highlight</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Tipe Konten</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Konten Teks</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Gambar</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Konten Gambar</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                     </tr>
                                 </thead>
@@ -66,15 +65,26 @@
                                             {{ ($beritas->currentPage() - 1) * $beritas->perPage() + $index + 1 }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
-                                            {{ $berita->section ? $berita->section->item . ' - ' . $berita->section->section : 'N/A' }}
-
+                                            {{ $berita->section->nama ?? 'N/A' }}
                                         </td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $berita->judul_berita }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ ucfirst(str_replace('_', ' ', $berita->kategori_berita)) }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ \Carbon\Carbon::parse($berita->tanggal_upload)->format('d-m-Y') }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $berita->highlight_berita ?? 'N/A' }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ ucfirst($berita->tipe_konten) }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $berita->konten_teks ?? 'N/A' }}</td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ ucfirst($berita->kategori_berita) }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ $berita->judul_berita }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ \Carbon\Carbon::parse($berita->tanggal_upload)->format('d M Y') }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ $berita->highlight_berita }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ ucfirst($berita->tipe_konten) }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ $berita->konten_teks ?? 'N/A' }}
+                                        </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             @if($berita->konten_gambar)
                                             <img src="{{ asset('storage/' . $berita->konten_gambar) }}" alt="Gambar Berita" style="height: 50px;">
@@ -83,11 +93,11 @@
                                             @endif
                                         </td>
                                         <td class="align-middle text-center">
-                                            <a href="{{ route('list-beritas.edit', $berita->id) }}" class="badge badge-sm bg-gradient-warning me-1">Edit</a>
-                                            <form action="{{ route('list-beritas.destroy', $berita->id) }}" method="POST" style="display:inline-block;">
+                                            <a href="{{ route('list_beritas.edit', $berita->id) }}" class="badge badge-sm bg-gradient-warning me-1">Edit</a>
+                                            <form action="{{ route('list_beritas.destroy', $berita->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="badge badge-sm bg-gradient-danger delete-btn" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
+                                                <button type="submit" class="badge badge-sm bg-gradient-danger" onclick="return confirm('Yakin ingin menghapus berita ini?')">Delete</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -115,5 +125,4 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 @endsection

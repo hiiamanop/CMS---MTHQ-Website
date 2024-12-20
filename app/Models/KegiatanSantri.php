@@ -16,7 +16,6 @@ class KegiatanSantri extends Model
     protected $fillable = [
         'section_id', // Relasi dengan tabel sections
         'nama_attribute',
-        'keterangan',
         'tipe_konten',
         'konten_teks',
         'konten_gambar'

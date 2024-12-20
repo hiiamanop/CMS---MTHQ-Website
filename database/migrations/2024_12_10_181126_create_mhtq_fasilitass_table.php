@@ -18,7 +18,6 @@ return new class extends Migration
                   ->constrained('sections') // Menyebut tabel secara eksplisit
                   ->cascadeOnDelete(); // Hapus detail jika berita terkait dihapus
             $table->string('nama_attribute');
-            $table->string('keterangan');
             $table->enum('tipe_konten', ['teks', 'gambar'])->default('teks');
             $table->text('konten_teks')->nullable();
             $table->string('konten_gambar')->nullable();

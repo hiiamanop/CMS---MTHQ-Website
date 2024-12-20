@@ -49,12 +49,7 @@
                                 <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" required>
                             </div>
 
-                            <!-- Keterangan -->
-                            <label for="keterangan" class="form-label">Keterangan</label>
-                            <div class="input-group input-group-outline mb-3">
-                                <textarea name="keterangan" id="keterangan" class="form-control" rows="3"></textarea>
-                            </div>
-
+                            
                             <!-- Tipe Konten -->
                             <label for="tipe_konten" class="form-label">Tipe Konten</label>
                             <div class="input-group input-group-outline mb-3">

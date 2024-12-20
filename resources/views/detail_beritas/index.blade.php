@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
@@ -12,16 +11,6 @@
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Detail Berita</li>
                 </ol>
             </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
-                <ul class="navbar-nav d-flex align-items-center justify-content-end">
-                    <li class="nav-item d-flex align-items-center">
-                        <a href="#" class="nav-link text-body font-weight-bold px-0">
-                            <i class="material-symbols-rounded">account_circle</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -33,18 +22,24 @@
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
                             <h6 class="text-white text-capitalize ps-3">Daftar Detail Berita</h6>
+                            <a href="{{ route('detail-beritas.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Detail Berita</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
                         <div class="table-responsive p-0">
-                            <a href="{{ route('detail_beritas.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Detail Berita</a>
-
-                            {{-- Success Message --}}
+                            <!-- Alert Success/Error -->
                             @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                            <script>
+                                Swal.fire('Berhasil!', '{{ session('
+                                    success ') }}', 'success');
+                            </script>
+                            @endif
+
+                            @if(session('error'))
+                            <script>
+                                Swal.fire('Gagal!', '{{ session('
+                                    error ') }}', 'error');
+                            </script>
                             @endif
 
                             <!-- Table -->
@@ -52,41 +47,45 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">No</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Section</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Attribute</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Keterangan</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Tipe Konten</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Konten Teks</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Konten Gambar</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Section</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">List Berita</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Nama Attribute</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Konten Teks</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Konten Gambar</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($detailBeritas as $index => $detailBerita)
+                                    @foreach ($detailBeritas as $index => $detail)
                                     <tr>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                        <td class="text-xs font-weight-bold text-center">
                                             {{ ($detailBeritas->currentPage() - 1) * $detailBeritas->perPage() + $index + 1 }}
                                         </td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">
-                                            {{ $detailBerita->section ? $detailBerita->section->item . ' - ' . $detailBerita->section->section : 'N/A' }}
+                                        <td class="text-xs font-weight-bold text-center">
+                                            {{ $detail->section->item ?? 'N/A' }}
                                         </td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $detailBerita->nama_attribute }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $detailBerita->keterangan ?? 'N/A' }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ ucfirst($detailBerita->tipe_konten) }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $detailBerita->konten_teks ?? 'N/A' }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">
-                                            @if($detailBerita->konten_gambar)
-                                            <img src="{{ asset('storage/' . $detailBerita->konten_gambar) }}" alt="Gambar Detail" style="height: 50px;">
+                                        <td class="text-xs font-weight-bold text-center">
+                                            {{ $detail->listBerita->judul_berita ?? 'N/A' }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold text-center">
+                                            {{ $detail->nama_attribute }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold text-center">
+                                            {{ $detail->konten_teks ?? 'N/A' }}
+                                        </td>
+                                        <td class="text-xs font-weight-bold text-center">
+                                            @if($detail->konten_gambar)
+                                            <img src="{{ asset('storage/' . $detail->konten_gambar) }}" alt="Konten Gambar" style="height: 50px;">
                                             @else
                                             N/A
                                             @endif
                                         </td>
                                         <td class="align-middle text-center">
-                                            <a href="{{ route('detail-beritas.edit', $detailBerita->id) }}" class="badge badge-sm bg-gradient-warning me-1">Edit</a>
-                                            <form action="{{ route('detail-beritas.destroy', $detailBerita->id) }}" method="POST" style="display:inline-block;">
+                                            <a href="{{ route('detail-beritas.edit', $detail->id) }}" class="badge badge-sm bg-gradient-warning me-1">Edit</a>
+                                            <form action="{{ route('detail-beritas.destroy', $detail->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="badge badge-sm bg-gradient-danger delete-btn" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
+                                                <button type="submit" class="badge badge-sm bg-gradient-danger" onclick="return confirm('Yakin ingin menghapus data ini?')">Delete</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -113,4 +112,5 @@
     </div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection

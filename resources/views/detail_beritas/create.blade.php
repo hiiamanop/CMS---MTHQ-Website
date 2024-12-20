@@ -40,7 +40,7 @@
 
                     <div class="card-body pb-2">
                         <!-- Form untuk menambah detail berita -->
-                        <form action="{{ route('detail_beritas.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('detail-beritas.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <!-- Pilih Section -->
@@ -49,7 +49,7 @@
                                 <select name="section_id" class="form-control" id="section_id" required>
                                     <option value="">Pilih Section</option>
                                     @foreach($sections as $section)
-                                        <option value="{{ $section->id }}">{{ $section->section->item }}</option>
+                                    <option value="{{ $section->id }}">{{ $section->item . ' - ' . $section->section }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -60,7 +60,7 @@
                                 <select name="list_berita_id" class="form-control" id="list_berita_id" required>
                                     <option value="">Pilih Berita</option>
                                     @foreach($listBeritas as $berita)
-                                        <option value="{{ $berita->id }}">{{ $berita->judul_berita }}</option>
+                                    <option value="{{ $berita->id }}">{{ $berita->judul_berita }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -69,12 +69,6 @@
                             <label for="nama_attribute" class="form-label">Nama Attribute</label>
                             <div class="input-group input-group-outline mb-3">
                                 <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" required>
-                            </div>
-
-                            <!-- Keterangan -->
-                            <label for="keterangan" class="form-label">Keterangan</label>
-                            <div class="input-group input-group-outline mb-3">
-                                <textarea name="keterangan" class="form-control" id="keterangan" rows="5"></textarea>
                             </div>
 
                             <!-- Pilih Tipe Konten -->
@@ -105,7 +99,7 @@
 
                             <!-- Tombol Simpan dan Kembali -->
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('detail_beritas.index') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('detail-beritas.index') }}" class="btn btn-secondary">Kembali</a>
                         </form>
                     </div>
                 </div>
