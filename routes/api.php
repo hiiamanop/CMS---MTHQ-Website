@@ -39,6 +39,7 @@ Route::get('galeri', [ApiGaleriController::class, 'index']);
 use App\Http\Controllers\Api\ApiKalenderAkademikController;
 
 Route::get('kalender-akademik', [ApiKalenderAkademikController::class, 'index']);
+Route::get('kalender-akademik/{id}/download', [ApiKalenderAkademikController::class, 'downloadGambar']);
 
 use App\Http\Controllers\Api\ApiKegiatanSantriController;
 
