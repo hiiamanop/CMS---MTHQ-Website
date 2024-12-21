@@ -76,8 +76,11 @@ use App\Http\Controllers\KontakController;
 Route::resource('kontaks', KontakController::class);
 
 use App\Http\Controllers\ProgramBahasaController;
+use App\Http\Controllers\ProgramEkstrakurikulerController;
 
 Route::resource('program_bahasas', ProgramBahasaController::class);
+
+Route::resource('program_ekstrakurikuler', ProgramEkstrakurikulerController::class);
 
 use App\Http\Controllers\ProgramKeamananController;
 
@@ -85,7 +88,7 @@ Route::resource('program_keamanan', ProgramKeamananController::class);
 
 use App\Http\Controllers\ProgramKesehatanController;
 
-Route::resource('program_kesehatan', ProgramKesehatanController::class);
+Route::resource('program_kesehatans', ProgramKesehatanController::class);
 
 use App\Http\Controllers\ProgramOlahragaController;
 

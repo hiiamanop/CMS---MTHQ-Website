@@ -35,7 +35,7 @@ class ProgramBahasaController extends Controller
         $request->validate([
             'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'tipe_konten' => 'required|in:teks,gambar',
+            'tipe_konten' => 'nullable|in:teks,gambar',
             'konten_teks' => 'nullable|string',
             'konten_gambar' => 'nullable|image|max:2048',
         ]);
@@ -73,7 +73,7 @@ class ProgramBahasaController extends Controller
         $request->validate([
             'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'tipe_konten' => 'required|in:teks,gambar',
+            'tipe_konten' => 'nullable|in:teks,gambar',
             'konten_teks' => 'nullable|string',
             'konten_gambar' => 'nullable|image|max:2048',
         ]);

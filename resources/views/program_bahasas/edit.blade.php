@@ -64,7 +64,7 @@
                             </div>
 
                             <!-- Tipe Konten -->
-                            <label for="tipe_konten" class="form-label">Tipe Konten</label>
+                            <!-- <label for="tipe_konten" class="form-label">Tipe Konten</label>
                             <div class="input-group input-group-outline mb-3">
                                 <select name="tipe_konten" id="tipe_konten" class="form-control @error('tipe_konten') is-invalid @enderror">
                                     <option value="teks" {{ $programBahasa->tipe_konten == 'teks' ? 'selected' : '' }}>Teks</option>
@@ -73,7 +73,7 @@
                                 @error('tipe_konten')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> -->
 
                             <!-- Konten Teks -->
                             <label for="konten_teks" class="form-label">Konten Teks</label>

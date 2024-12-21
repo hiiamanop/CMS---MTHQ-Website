@@ -12,15 +12,6 @@
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Edit</li>
                 </ol>
             </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <ul class="navbar-nav d-flex align-items-center justify-content-end">
-                    <li class="nav-item d-flex align-items-center">
-                        <a href="{{ route('logout') }}" class="nav-link text-body font-weight-bold px-0">
-                            <i class="material-symbols-rounded">account_circle</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -31,13 +22,13 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Edit Attribute Program Olahraga</h6>
+                            <h6 class="text-white text-capitalize ps-3">Edit Program Olahraga</h6>
                         </div>
                     </div>
 
                     <div class="card-body pb-2">
                         <!-- Form untuk mengedit program olahraga -->
-                        <form role="form" method="POST" action="{{ route('program_olahraga.update', $program_olahraga->id) }}" class="text-start">
+                        <form role="form" method="POST" action="{{ route('program_olahraga.update', $programOlahraga->id) }}" class="text-start" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -61,21 +52,51 @@
                             </div>
                             @endif
 
-                            <!-- Input Nama Program Olahraga -->
+                            <!-- Pilih Section -->
+                            <label for="section_id" class="form-label">Pilih Section</label>
+                            <div class="input-group input-group-outline mb-3">
+                                <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror">
+                                    <option value="">-- Pilih Section --</option>
+                                    @foreach ($sections as $section)
+                                    <option value="{{ $section->id }}" {{ old('section_id', $programOlahraga->section_id) == $section->id ? 'selected' : '' }}>
+                                        {{ $section->item . ' - ' . $section->section }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('section_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Nama Attribute -->
+                            <label for="nama_attribute" class="form-label">Nama Attribute</label>
                             <div class="input-group input-group-outline my-3">
-                                
-                                <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" value="{{ old('nama_attribute', $program_olahraga->nama_attribute) }}" required>
+                                <input type="text" name="nama_attribute" class="form-control @error('nama_attribute') is-invalid @enderror" value="{{ old('nama_attribute', $programOlahraga->nama_attribute) }}" required>
                                 @error('nama_attribute')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Input Keterangan -->
-                            <div class="input-group input-group-outline my-3">
-                                <textarea name="keterangan" class="form-control" id="keterangan" required>{{ old('keterangan', $program_olahraga->keterangan) }}</textarea>
-                                @error('keterangan')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <!-- Konten Teks -->
+                            <div id="konten_teks_field">
+                                <label for="konten_teks" class="form-label">Konten Teks</label>
+                                <div class="input-group input-group-outline mb-3">
+                                    <textarea name="konten_teks" id="konten_teks" class="form-control @error('konten_teks') is-invalid @enderror" rows="3">{{ old('konten_teks', $programOlahraga->konten_teks) }}</textarea>
+                                    @error('konten_teks')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Konten Gambar -->
+                            <div id="konten_gambar_field">
+                                <label for="konten_gambar" class="form-label">Upload Gambar</label>
+                                <div class="input-group input-group-outline mb-3">
+                                    <input type="file" name="konten_gambar" id="konten_gambar" class="form-control @error('konten_gambar') is-invalid @enderror">
+                                    @error('konten_gambar')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
 
                             <div class="d-flex justify-content-start">

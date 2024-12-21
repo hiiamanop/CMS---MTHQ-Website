@@ -8,19 +8,10 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Halaman</a></li>
-                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Program Pengasuhan</li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Program Tahfidz</li>
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Edit</li>
                 </ol>
             </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <ul class="navbar-nav d-flex align-items-center justify-content-end">
-                    <li class="nav-item d-flex align-items-center">
-                        <a href="{{ route('logout') }}" class="nav-link text-body font-weight-bold px-0">
-                            <i class="material-symbols-rounded">account_circle</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -31,13 +22,13 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Edit Attribute Program Pengasuhan</h6>
+                            <h6 class="text-white text-capitalize ps-3">Edit Program Tahfidz</h6>
                         </div>
                     </div>
 
                     <div class="card-body pb-2">
-                        <!-- Form untuk mengedit program pengasuhan -->
-                        <form role="form" method="POST" action="{{ route('program_tahfidz.update', $programTahfidz->id) }}" class="text-start">
+                        <!-- Form untuk mengedit program tahfidz -->
+                        <form role="form" method="POST" action="{{ route('program_tahfidz.update', $programTahfidz->id) }}" class="text-start" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -61,24 +52,51 @@
                             </div>
                             @endif
 
-                            <!-- Input Nama Program Pengasuhan -->
-                            <label for="nama_attribute" class="form-label">Nama Attribute</label>
-
+                            <!-- Pilih Section -->
+                            <label for="section_id" class="form-label">Pilih Section</label>
                             <div class="input-group input-group-outline mb-3">
-                                <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" value="{{ old('nama_attribute', $programTahfidz->nama_attribute) }}" required>
+                                <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror">
+                                    <option value="">-- Pilih Section --</option>
+                                    @foreach ($programTahfidzSections as $section)
+                                    <option value="{{ $section->id }}" {{ old('section_id', $programTahfidz->section_id) == $section->id ? 'selected' : '' }}>
+                                        {{ $section->item . ' - ' . $section->section }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('section_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Nama Attribute -->
+                            <label for="nama_attribute" class="form-label">Nama Attribute</label>
+                            <div class="input-group input-group-outline my-3">
+                                <input type="text" name="nama_attribute" class="form-control @error('nama_attribute') is-invalid @enderror" value="{{ old('nama_attribute', $programTahfidz->nama_attribute) }}" required>
                                 @error('nama_attribute')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Input Keterangan -->
-                            <label for="keterangan" class="form-label">Keterangan</label>
+                            <!-- Konten Teks -->
+                            <div id="konten_teks_field">
+                                <label for="konten_teks" class="form-label">Konten Teks</label>
+                                <div class="input-group input-group-outline mb-3">
+                                    <textarea name="konten_teks" id="konten_teks" class="form-control @error('konten_teks') is-invalid @enderror" rows="3">{{ old('konten_teks', $programTahfidz->konten_teks) }}</textarea>
+                                    @error('konten_teks')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-                            <div class="input-group input-group-outline mb-3">
-                                <textarea name="keterangan" class="form-control" id="keterangan" required>{{ old('keterangan', $programTahfidz->keterangan) }}</textarea>
-                                @error('keterangan')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <!-- Konten Gambar -->
+                            <div id="konten_gambar_field">
+                                <label for="konten_gambar" class="form-label">Upload Gambar</label>
+                                <div class="input-group input-group-outline mb-3">
+                                    <input type="file" name="konten_gambar" id="konten_gambar" class="form-control @error('konten_gambar') is-invalid @enderror">
+                                    @error('konten_gambar')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
 
                             <div class="d-flex justify-content-start">
@@ -91,27 +109,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Success Notification Script -->
-    @if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if ("Notification" in window) {
-                Notification.requestPermission().then(function(permission) {
-                    if (permission === "granted") {
-                        new Notification("Sukses", {
-                            body: "{{ session('success') }}",
-                            icon: "/path/to/your/icon.png"
-                        });
-                    } else {
-                        alert("{{ session('success') }}");
-                    }
-                });
-            } else {
-                alert("{{ session('success') }}");
-            }
-        });
-    </script>
-    @endif
 </main>
 @endsection

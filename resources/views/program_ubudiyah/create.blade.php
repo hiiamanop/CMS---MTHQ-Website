@@ -7,23 +7,11 @@
         <div class="container-fluid py-1 px-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                    <li class="breadcrumb-item text-sm">
-                        <a class="opacity-5 text-dark" href="javascript:;">Halaman</a>
-                    </li>
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Halaman</a></li>
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Program Ubudiyah</li>
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Tambah</li>
                 </ol>
             </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
-                <ul class="navbar-nav d-flex align-items-center justify-content-end">
-                    <li class="nav-item d-flex align-items-center">
-                        <a href="{{ route('logout') }}" class="nav-link text-body font-weight-bold px-0">
-                            <i class="material-symbols-rounded">account_circle</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -39,20 +27,54 @@
                     </div>
 
                     <div class="card-body pb-2">
-                        <!-- Form untuk menambah data program ubudiyah -->
-                        <form action="{{ route('program_ubudiyah.store') }}" method="POST">
+                        <form action="{{ route('program_ubudiyah.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
-                            <!-- Nama Program -->
-                            <label for="nama_program" class="form-label">Nama Attribute</label>
+                            <!-- Pilih Section -->
+                            <label for="section_id" class="form-label">Pilih Section</label>
                             <div class="input-group input-group-outline mb-3">
-                                <input type="text" name="nama_attribute" class="form-control" id="nama_program" required>
+                                <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror">
+                                    <option value="">-- Pilih Section --</option>
+                                    @foreach ($sections as $section)
+                                        <option value="{{ $section->id }}" {{ old('section_id') == $section->id ? 'selected' : '' }}>
+                                            {{ $section->item . ' - ' . $section->nama_section }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('section_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
-                            <!-- Deskripsi -->
-                            <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <!-- Nama Attribute -->
+                            <label for="nama_attribute" class="form-label">Nama Attribute</label>
                             <div class="input-group input-group-outline mb-3">
-                                <textarea name="keterangan" class="form-control" id="deskripsi" rows="3" required></textarea>
+                                <input type="text" name="nama_attribute" class="form-control @error('nama_attribute') is-invalid @enderror" id="nama_attribute" value="{{ old('nama_attribute') }}" required>
+                                @error('nama_attribute')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Konten Teks -->
+                            <div id="konten_teks_field">
+                                <label for="konten_teks" class="form-label">Konten Teks</label>
+                                <div class="input-group input-group-outline mb-3">
+                                    <textarea name="konten_teks" id="konten_teks" class="form-control @error('konten_teks') is-invalid @enderror" rows="3">{{ old('konten_teks') }}</textarea>
+                                    @error('konten_teks')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Konten Gambar -->
+                            <div id="konten_gambar_field">
+                                <label for="konten_gambar" class="form-label">Upload Gambar</label>
+                                <div class="input-group input-group-outline mb-3">
+                                    <input type="file" name="konten_gambar" id="konten_gambar" class="form-control @error('konten_gambar') is-invalid @enderror">
+                                    @error('konten_gambar')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
 
                             <!-- Tombol Simpan dan Kembali -->

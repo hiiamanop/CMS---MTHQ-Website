@@ -12,17 +12,18 @@ class ProgramKeamanan extends Model
     // Nama tabel
     protected $table = 'program_keamanans';
 
-    // Kolom yang dapat diisi (mass assignment)
+    // Kolom yang dapat diisi
     protected $fillable = [
-        'section_id', 
+        'section_id',
         'nama_attribute',
         'tipe_konten',
         'konten_teks',
-        'konten_gambar'
+        'konten_gambar',
     ];
 
+    // Relasi ke tabel 'sections'
     public function section()
     {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(Section::class, 'section_id');
     }
 }

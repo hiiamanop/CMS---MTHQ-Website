@@ -49,7 +49,7 @@
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">No</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Item - Section - Halaman</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Attribute</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Tipe Konten</th>
+                                        
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Teks Konten</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Gambar Konten</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
@@ -65,7 +65,6 @@
                                             {{ $programBahasa->section ? $programBahasa->section->item . ' - ' . $programBahasa->section->section : 'N/A' }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $programBahasa->nama_attribute }}</td>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $programBahasa->tipe_konten }}</td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             {{ $programBahasa->konten_teks ?? 'N/A' }}
                                         </td>

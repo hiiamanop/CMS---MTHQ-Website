@@ -12,16 +12,6 @@
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Program Wirausaha</li>
                 </ol>
             </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
-                <ul class="navbar-nav d-flex align-items-center justify-content-end">
-                    <li class="nav-item d-flex align-items-center">
-                        <a href="#" class="nav-link text-body font-weight-bold px-0">
-                            <i class="material-symbols-rounded">account_circle</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -32,19 +22,23 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Daftar Attribute Program Wirausaha</h6>
+                            <h6 class="text-white text-capitalize ps-3">Daftar Program Wirausaha</h6>
+                            <a href="{{ route('program_wirausaha.create') }}" class="btn btn-primary btn-sm float-end mx-3">Tambah Program Wirausaha</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
                         <div class="table-responsive p-0">
-                            <a href="{{ route('program_wirausaha.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Attribute</a>
-
-                            {{-- Success Message --}}
+                            <!-- Alert Success/Error -->
                             @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                            <script>
+                                Swal.fire('Berhasil!', '{{ session('success') }}', 'success');
+                            </script>
+                            @endif
+
+                            @if(session('error'))
+                            <script>
+                                Swal.fire('Gagal!', '{{ session('error') }}', 'error');
+                            </script>
                             @endif
 
                             <!-- Table -->
@@ -52,25 +46,35 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">No</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Attribute</th>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Keterangan</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Item - Section</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Nama Attribute</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Konten Teks</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Gambar</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($programWirausahas as $index => $programWirausaha)
                                     <tr>
-                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                        <td class="text-xs font-weight-bold text-center">
                                             {{ ($programWirausahas->currentPage() - 1) * $programWirausahas->perPage() + $index + 1 }}
                                         </td>
-
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $programWirausaha->nama_attribute }}</td>
-
-                                        <td class="text-xs font-weight-bold mb-0 text-center">{{ $programWirausaha->keterangan }}</td>
-
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ $programWirausaha->section ? $programWirausaha->section->item . ' - ' . $programWirausaha->section->section : 'N/A' }}
+                                        </td>
+                                        <td class="text-xs text-center">{{ $programWirausaha->nama_attribute }}</td>
+                                        <td class="text-xs text-center">
+                                            {{ $programWirausaha->konten_teks ?? 'N/A' }}
+                                        </td>
+                                        <td class="text-xs text-center">
+                                            @if($programWirausaha->konten_gambar)
+                                            <img src="{{ asset('storage/' . $programWirausaha->konten_gambar) }}" alt="" style="height: 50px;">
+                                            @else
+                                            N/A
+                                            @endif
+                                        </td>
                                         <td class="align-middle text-center">
                                             <a href="{{ route('program_wirausaha.edit', $programWirausaha->id) }}" class="badge badge-sm bg-gradient-warning me-1">Edit</a>
-
                                             <form action="{{ route('program_wirausaha.destroy', $programWirausaha->id) }}" method="POST" style="display:inline-block;">
                                                 @csrf
                                                 @method('DELETE')
@@ -82,7 +86,6 @@
                                 </tbody>
                             </table>
 
-                            <!-- Pagination -->
                             <div class="d-flex justify-content-between align-items-center mt-3 px-3">
                                 <div class="text-muted">
                                     Showing {{ ($programWirausahas->currentPage() - 1) * $programWirausahas->perPage() + 1 }}
@@ -93,6 +96,7 @@
                                     {{ $programWirausahas->links('pagination::bootstrap-4') }}
                                 </nav>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -100,5 +104,7 @@
         </div>
     </div>
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @endsection

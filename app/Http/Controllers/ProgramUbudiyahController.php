@@ -3,77 +3,102 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProgramUbudiyah;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProgramUbudiyahController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan daftar ProgramUbudiyah
     public function index()
     {
-        $programUbudiyahs = ProgramUbudiyah::paginate(10);
+        $programUbudiyahs = ProgramUbudiyah::with('section')->paginate(10);
         return view('program_ubudiyah.index', compact('programUbudiyahs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Menampilkan form untuk membuat ProgramUbudiyah baru
     public function create()
     {
-        return view('program_ubudiyah.create');
+        $sections = Section::all();
+        return view('program_ubudiyah.create', compact('sections'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Menyimpan data ProgramUbudiyah baru
     public function store(Request $request)
     {
         $request->validate([
+            'section_id' => 'required|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
-        ProgramUbudiyah::create([
-            'nama_attribute' => $request->nama_attribute,
-            'keterangan' => $request->keterangan,
-        ]);
+        $programUbudiyah = new ProgramUbudiyah();
+        $programUbudiyah->section_id = $request->section_id;
+        $programUbudiyah->nama_attribute = $request->nama_attribute;
+        $programUbudiyah->konten_teks = $request->konten_teks;
 
-        return redirect()->route('program_ubudiyah.index')->with('success', 'Data berhasil ditambahkan');
+        if ($request->hasFile('konten_gambar')) {
+            $imagePath = $request->file('konten_gambar')->store('program_ubudiyah_images', 'public');
+            $programUbudiyah->konten_gambar = $imagePath;
+        }
+
+        $programUbudiyah->save();
+
+        return redirect()->route('program_ubudiyah.index')->with('success', 'Program Ubudiyah created successfully.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ProgramUbudiyah $programUbudiyah)
+    // Menampilkan form untuk mengedit ProgramUbudiyah
+    public function edit($id)
     {
-        return view('program_ubudiyah.edit', compact('programUbudiyah'));
+        $programUbudiyah = ProgramUbudiyah::findOrFail($id);
+        $sections = Section::all();
+        return view('program_ubudiyah.edit', compact('programUbudiyah', 'sections'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ProgramUbudiyah $programUbudiyah)
+    // Memperbarui data ProgramUbudiyah
+    public function update(Request $request, $id)
     {
         $request->validate([
+            'section_id' => 'required|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
-        $programUbudiyah->update([
-            'nama_attribute' => $request->nama_attribute,
-            'keterangan' => $request->keterangan,
-        ]);
+        $programUbudiyah = ProgramUbudiyah::findOrFail($id);
+        $programUbudiyah->section_id = $request->section_id;
+        $programUbudiyah->nama_attribute = $request->nama_attribute;
+        $programUbudiyah->tipe_konten = $request->tipe_konten;
+        $programUbudiyah->konten_teks = $request->konten_teks;
 
-        return redirect()->route('program_ubudiyah.index')->with('success', 'Data berhasil diperbarui');
+        if ($request->hasFile('konten_gambar')) {
+            // Hapus gambar lama jika ada
+            if ($programUbudiyah->konten_gambar) {
+                Storage::disk('public')->delete($programUbudiyah->konten_gambar);
+            }
+
+            $imagePath = $request->file('konten_gambar')->store('program_ubudiyah_images', 'public');
+            $programUbudiyah->konten_gambar = $imagePath;
+        }
+
+        $programUbudiyah->save();
+
+        return redirect()->route('program_ubudiyah.index')->with('success', 'Program Ubudiyah updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ProgramUbudiyah $programUbudiyah)
+    // Menghapus ProgramUbudiyah
+    public function destroy($id)
     {
+        $programUbudiyah = ProgramUbudiyah::findOrFail($id);
+
+        // Hapus gambar jika ada
+        if ($programUbudiyah->konten_gambar) {
+            Storage::disk('public')->delete($programUbudiyah->konten_gambar);
+        }
+
         $programUbudiyah->delete();
-        return redirect()->route('program_ubudiyah.index')->with('success', 'Data berhasil dihapus');
+
+        return redirect()->route('program_ubudiyah.index')->with('success', 'Program Ubudiyah deleted successfully.');
     }
 }

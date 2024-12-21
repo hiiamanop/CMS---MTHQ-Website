@@ -3,91 +3,93 @@
 namespace App\Http\Controllers;
 
 use App\Models\KalenderAkademik;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class KalenderAkademikController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Show all kalender akademik records
     public function index()
     {
-        $kalenders = KalenderAkademik::paginate(10); // Paginate 10 items per page
-        return view('kalender_akademiks.index', compact('kalenders'));
+        $kalenderAkademiks = KalenderAkademik::with('section')->paginate(10); // Fetch all records with related section data
+        return view('kalender_akademik.index', compact('kalenderAkademiks'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Show form to create a new kalender akademik
     public function create()
     {
-        return view('kalender_akademiks.create');
+        $sections = Section::all(); // Fetch all sections
+        return view('kalender_akademik.create', compact('sections'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Store a newly created kalender akademik in storage
     public function store(Request $request)
     {
-        // Validasi data
         $request->validate([
+            'section_id' => 'required|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'gambar'         => 'required|file|mimes:jpeg,png,jpg|max:2048', // Validasi file
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Optional image upload
         ]);
 
-        // Proses file gambar
-        if ($request->hasFile('gambar')) {
-            // Simpan file gambar ke dalam storage/public/kalender_akademik
-            $gambarPath = $request->file('gambar')->store('kalender_akademik', 'public');
+        // Handle file upload if there is a file
+        if ($request->hasFile('konten_gambar')) {
+            $path = $request->file('konten_gambar')->store('konten_gambar', 'public');
         }
 
-        // Simpan data ke database
         KalenderAkademik::create([
+            'section_id' => $request->section_id,
             'nama_attribute' => $request->nama_attribute,
-            'gambar' => $gambarPath, // Simpan path gambar
+            'konten_teks' => $request->konten_teks,
+            'konten_gambar' => $path ?? null, // Store the image path if available
         ]);
 
-        return redirect()->route('kalender_akademiks.index')
-            ->with('success', 'Kalender Akademik berhasil ditambahkan.');
+        return redirect()->route('kalender_akademiks.index')->with('success', 'Kalender Akademik created successfully!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    // Show the form for editing the specified kalender akademik
+    public function edit(KalenderAkademik $kalenderAkademik)
     {
-        $kalender = KalenderAkademik::findOrFail($id);
-        return view('kalender_akademiks.edit', compact('kalender'));
+        $sections = Section::all(); // Fetch all sections
+        return view('kalender_akademik.edit', compact('kalenderAkademik', 'sections'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
+    // Update the specified kalender akademik in storage
+    public function update(Request $request, KalenderAkademik $kalenderAkademik)
     {
-        // Validasi data
         $request->validate([
+            'section_id' => 'required|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'gambar'         => 'required|file|mimes:jpeg,png,jpg|max:2048', // Validasi file
-
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Optional image upload
         ]);
 
-        $kalender = KalenderAkademik::findOrFail($id);
-        $kalender->update($request->all());
+        // Handle file upload if there is a new file
+        if ($request->hasFile('konten_gambar')) {
+            $path = $request->file('konten_gambar')->store('konten_gambar', 'public');
+            $kalenderAkademik->konten_gambar = $path; // Update image path
+        }
 
-        return redirect()->route('kalender_akademiks.index')
-            ->with('success', 'Kalender Akademik berhasil diperbarui.');
+        $kalenderAkademik->update([
+            'section_id' => $request->section_id,
+            'nama_attribute' => $request->nama_attribute,
+            'tipe_konten' => $request->tipe_konten,
+            'konten_teks' => $request->konten_teks,
+            // 'konten_gambar' is updated only if a new image is uploaded
+        ]);
+
+        return redirect()->route('kalender_akademiks.index')->with('success', 'Kalender Akademik updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
+    // Remove the specified kalender akademik from storage
+    public function destroy(KalenderAkademik $kalenderAkademik)
     {
-        $kalender = KalenderAkademik::findOrFail($id);
-        $kalender->delete();
+        if ($kalenderAkademik->konten_gambar) {
+            Storage::delete($kalenderAkademik->konten_gambar); // Delete image file from storage if it exists
+        }
 
-        return redirect()->route('kalender_akademiks.index')
-            ->with('success', 'Kalender Akademik berhasil dihapus.');
+        $kalenderAkademik->delete();
+        return redirect()->route('kalender_akademiks.index')->with('success', 'Kalender Akademik deleted successfully!');
     }
 }

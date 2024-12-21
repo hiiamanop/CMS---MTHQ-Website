@@ -108,13 +108,19 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-dark" href="{{route('program_ekstrakurikuler.index')}}">
+                    <i class="material-symbols-rounded opacity-5">table_view</i>
+                    <span class="nav-link-text ms-1">Program Ekstrakurikuler</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-dark" href="{{route('program_keamanan.index')}}">
                     <i class="material-symbols-rounded opacity-5">table_view</i>
                     <span class="nav-link-text ms-1">Program Keamanan</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" href="{{route('program_kesehatan.index')}}">
+                <a class="nav-link text-dark" href="{{route('program_kesehatans.index')}}">
                     <i class="material-symbols-rounded opacity-5">table_view</i>
                     <span class="nav-link-text ms-1">Program Kesehatan</span>
                 </a>
@@ -153,6 +159,17 @@
                 <a class="nav-link text-dark" href="{{route('program_wirausaha.index')}}">
                     <i class="material-symbols-rounded opacity-5">table_view</i>
                     <span class="nav-link-text ms-1">Program Wirausaha</span>
+                </a>
+            </li>
+
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Lainnya</h6>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="{{route('kalender_akademiks.index')}}">
+                    <i class="material-symbols-rounded opacity-5">table_view</i>
+                    <span class="nav-link-text ms-1">Kalender Akademik</span>
                 </a>
             </li>
 

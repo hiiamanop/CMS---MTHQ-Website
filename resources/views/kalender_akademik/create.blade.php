@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Halaman</a></li>
-                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Program Tahfidz</li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Kalender Akademik</li>
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Tambah</li>
                 </ol>
             </nav>
@@ -22,12 +22,12 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Tambah Program Tahfidz</h6>
+                            <h6 class="text-white text-capitalize ps-3">Tambah Kalender Akademik</h6>
                         </div>
                     </div>
 
                     <div class="card-body pb-2">
-                        <form action="{{ route('program_talim.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('kalender_akademiks.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <!-- Pilih Section -->
@@ -35,9 +35,9 @@
                             <div class="input-group input-group-outline mb-3">
                                 <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror">
                                     <option value="">-- Pilih Section --</option>
-                                    @foreach ($sections as $section) <!-- Mengganti programTahfidzSections menjadi sections -->
+                                    @foreach ($sections as $section)
                                         <option value="{{ $section->id }}" {{ old('section_id') == $section->id ? 'selected' : '' }}>
-                                            {{ $section->item . ' - ' . $section->nama_section }}
+                                            {{ $section->item . ' - ' . $section->section }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -68,7 +68,7 @@
 
                             <!-- Konten Gambar -->
                             <div id="konten_gambar_field">
-                                <label for="konten_gambar" class="form-label">Upload Gambar</label>
+                                <label for="konten_gambar" class="form-label">Upload Gambar (Opsional)</label>
                                 <div class="input-group input-group-outline mb-3">
                                     <input type="file" name="konten_gambar" id="konten_gambar" class="form-control @error('konten_gambar') is-invalid @enderror">
                                     @error('konten_gambar')
@@ -79,7 +79,7 @@
 
                             <!-- Tombol Simpan dan Kembali -->
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('program_talim.index') }}" class="btn btn-secondary">Kembali</a>
+                            <a href="{{ route('kalender_akademiks.index') }}" class="btn btn-secondary">Kembali</a>
                         </form>
                     </div>
                 </div>

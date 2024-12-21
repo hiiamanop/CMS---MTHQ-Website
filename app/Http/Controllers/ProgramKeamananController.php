@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProgramKeamanan;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProgramKeamananController extends Controller
 {
@@ -12,8 +14,7 @@ class ProgramKeamananController extends Controller
      */
     public function index()
     {
-        // Ambil semua data program keamanan
-        $programKeamanans = ProgramKeamanan::paginate(10);
+        $programKeamanans = ProgramKeamanan::with('section')->latest()->paginate(10);
         return view('program_keamanan.index', compact('programKeamanans'));
     }
 
@@ -22,7 +23,8 @@ class ProgramKeamananController extends Controller
      */
     public function create()
     {
-        return view('program_keamanan.create');
+        $sections = Section::all();
+        return view('program_keamanan.create', compact('sections'));
     }
 
     /**
@@ -30,51 +32,73 @@ class ProgramKeamananController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
-        $request->validate([
+        $validatedData = $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string|max:255',
+            'tipe_konten' => 'nullable|in:teks,gambar',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Simpan data ke database
-        ProgramKeamanan::create($request->all());
+        // Handle image upload
+        if ($request->hasFile('konten_gambar')) {
+            $validatedData['konten_gambar'] = $request->file('konten_gambar')->store('konten_gambar', 'public');
+;
+        }
 
-        return redirect()->route('program_keamanan.index')->with('success', 'Program Keamanan berhasil ditambahkan.');
+        ProgramKeamanan::create($validatedData);
+
+        return redirect()->route('program_keamanan.index')->with('success', 'Data berhasil ditambahkan.');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProgramKeamanan $program_keamanan)
+    public function edit(ProgramKeamanan $programKeamanan)
     {
-        return view('program_keamanan.edit', compact('program_keamanan'));
+        $sections = Section::all();
+        return view('program_keamanan.edit', compact('programKeamanan', 'sections'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProgramKeamanan $program_keamanan)
+    public function update(Request $request, ProgramKeamanan $programKeamanan)
     {
-        // Validasi input
-        $request->validate([
+        $validatedData = $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string|max:255',
+            'tipe_konten' => 'nullable|in:teks,gambar',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Update data
-        $program_keamanan->update($request->all());
+        // Handle image upload
+        if ($request->hasFile('konten_gambar')) {
+            // Hapus gambar lama jika ada
+            if ($programKeamanan->konten_gambar) {
+                Storage::delete($programKeamanan->konten_gambar);
+            }
+            $validatedData['konten_gambar'] = $request->file('konten_gambar')->store('konten_gambar', 'public');
+        }
 
-        return redirect()->route('program_keamanan.index')->with('success', 'Program Keamanan berhasil diperbarui.');
+        $programKeamanan->update($validatedData);
+
+        return redirect()->route('program_keamanan.index')->with('success', 'Data berhasil diperbarui.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProgramKeamanan $program_keamanan)
+    public function destroy(ProgramKeamanan $programKeamanan)
     {
-        // Hapus data
-        $program_keamanan->delete();
+        // Hapus gambar jika ada
+        if ($programKeamanan->konten_gambar) {
+            Storage::delete($programKeamanan->konten_gambar);
+        }
 
-        return redirect()->route('program_keamanan.index')->with('success', 'Program Keamanan berhasil dihapus.');
+        $programKeamanan->delete();
+
+        return redirect()->route('program_keamanan.index')->with('success', 'Data berhasil dihapus.');
     }
 }

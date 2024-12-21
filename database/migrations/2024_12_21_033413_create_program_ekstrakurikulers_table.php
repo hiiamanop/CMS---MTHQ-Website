@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('program_olahragas', function (Blueprint $table) {
+        Schema::create('program_ekstrakurikulers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('section_id')
                   ->nullable() // Tambahkan nullable di sini
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('program_olahragas');
+        Schema::dropIfExists('program_ekstrakurikulers');
     }
 };

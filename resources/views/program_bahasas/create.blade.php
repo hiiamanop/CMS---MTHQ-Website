@@ -49,7 +49,7 @@
                                 <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" required>
                             </div>
 
-                            <!-- Tipe Konten -->
+                            <!-- Tipe Konten
                             <label for="tipe_konten" class="form-label">Tipe Konten</label>
                             <div class="input-group input-group-outline mb-3">
                                 <select name="tipe_konten" id="tipe_konten" class="form-control" onchange="toggleKontenFields()">
@@ -57,10 +57,10 @@
                                     <option value="teks">Teks</option>
                                     <option value="gambar">Gambar</option>
                                 </select>
-                            </div>
+                            </div> -->
 
                             <!-- Konten Teks -->
-                            <div id="konten_teks_field" style="display: none;">
+                            <div id="konten_teks_field" >
                                 <label for="konten_teks" class="form-label">Konten Teks</label>
                                 <div class="input-group input-group-outline mb-3">
                                     <textarea name="konten_teks" id="konten_teks" class="form-control" rows="3"></textarea>
@@ -68,7 +68,7 @@
                             </div>
 
                             <!-- Konten Gambar -->
-                            <div id="konten_gambar_field" style="display: none;">
+                            <div id="konten_gambar_field" >
                                 <label for="konten_gambar" class="form-label">Upload Gambar</label>
                                 <div class="input-group input-group-outline mb-3">
                                     <input type="file" name="konten_gambar" id="konten_gambar" class="form-control">

@@ -65,7 +65,7 @@
                                             {{ ($beritas->currentPage() - 1) * $beritas->perPage() + $index + 1 }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
-                                            {{ $berita->section->nama ?? 'N/A' }}
+                                            {{ $berita->section->item ?? 'N/A' }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             {{ ucfirst($berita->kategori_berita) }}

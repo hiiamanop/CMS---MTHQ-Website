@@ -11,15 +11,17 @@ class ProgramKesehatan extends Model
 
     protected $table = 'program_kesehatans';
 
-    // Mass Assignment
     protected $fillable = [
-        'section_id', 
+        'section_id',
         'nama_attribute',
         'tipe_konten',
         'konten_teks',
-        'konten_gambar'
+        'konten_gambar',
     ];
 
+    /**
+     * Relationship with Section model
+     */
     public function section()
     {
         return $this->belongsTo(Section::class);

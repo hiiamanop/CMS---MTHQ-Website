@@ -12,15 +12,6 @@
                     <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Edit</li>
                 </ol>
             </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <ul class="navbar-nav d-flex align-items-center justify-content-end">
-                    <li class="nav-item d-flex align-items-center">
-                        <a href="{{ route('logout') }}" class="nav-link text-body font-weight-bold px-0">
-                            <i class="material-symbols-rounded">account_circle</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -37,7 +28,7 @@
 
                     <div class="card-body pb-2">
                         <!-- Form untuk mengedit program wirausaha -->
-                        <form role="form" method="POST" action="{{ route('program_wirausaha.update', $programWirausaha->id) }}" class="text-start">
+                        <form role="form" method="POST" action="{{ route('program_wirausaha.update', $programWirausaha->id) }}" class="text-start" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -61,25 +52,60 @@
                             </div>
                             @endif
 
-                            <!-- Input Nama Program -->
-                            <label for="nama_attribute" class="form-label">Nama Attribute</label>
+                            <!-- Pilih Section -->
+                            <label for="section_id" class="form-label">Pilih Section</label>
                             <div class="input-group input-group-outline mb-3">
-                                <input type="text" name="nama_attribute" class="form-control" id="nama_attribute" value="{{ old('nama_attribute', $programWirausaha->nama_attribute) }}" required>
+                                <select name="section_id" id="section_id" class="form-control @error('section_id') is-invalid @enderror">
+                                    <option value="">-- Pilih Section --</option>
+                                    @foreach ($sections as $section)
+                                    <option value="{{ $section->id }}" {{ old('section_id', $programWirausaha->section_id) == $section->id ? 'selected' : '' }}>
+                                        {{ $section->item . ' - ' . $section->nama_section }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('section_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Nama Attribute -->
+                            <label for="nama_attribute" class="form-label">Nama Attribute</label>
+                            <div class="input-group input-group-outline my-3">
+                                <input type="text" name="nama_attribute" class="form-control @error('nama_attribute') is-invalid @enderror" value="{{ old('nama_attribute', $programWirausaha->nama_attribute) }}" required>
                                 @error('nama_attribute')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Input Keterangan -->
-                            <label for="keterangan" class="form-label">Keterangan</label>
-                            <div class="input-group input-group-outline mb-3">
-                                <textarea name="keterangan" class="form-control" id="keterangan" rows="3" required>{{ old('keterangan', $programWirausaha->keterangan) }}</textarea>
-                                @error('keterangan')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <!-- Konten Teks -->
+                            <div id="konten_teks_field">
+                                <label for="konten_teks" class="form-label">Konten Teks</label>
+                                <div class="input-group input-group-outline mb-3">
+                                    <textarea name="konten_teks" id="konten_teks" class="form-control @error('konten_teks') is-invalid @enderror" rows="3">{{ old('konten_teks', $programWirausaha->konten_teks) }}</textarea>
+                                    @error('konten_teks')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
 
-                            <!-- Tombol Submit -->
+                            <!-- Konten Gambar -->
+                            <div id="konten_gambar_field">
+                                <label for="konten_gambar" class="form-label">Upload Gambar</label>
+                                <div class="input-group input-group-outline mb-3">
+                                    <input type="file" name="konten_gambar" id="konten_gambar" class="form-control @error('konten_gambar') is-invalid @enderror">
+                                    @error('konten_gambar')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Menampilkan Gambar Lama jika Ada -->
+                            @if ($programWirausaha->konten_gambar)
+                            <div class="mb-3">
+                                <img src="{{ asset('storage/' . $programWirausaha->konten_gambar) }}" alt="Program Gambar" class="img-thumbnail" style="max-width: 200px;">
+                            </div>
+                            @endif
+
                             <div class="d-flex justify-content-start">
                                 <button type="submit" class="btn btn-primary">Update</button>
                                 <a href="{{ route('program_wirausaha.index') }}" class="btn btn-secondary ms-2">Kembali</a>
@@ -90,27 +116,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Success Notification Script -->
-    @if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            if ("Notification" in window) {
-                Notification.requestPermission().then(function(permission) {
-                    if (permission === "granted") {
-                        new Notification("Sukses", {
-                            body: "{{ session('success') }}",
-                            icon: "/path/to/your/icon.png"
-                        });
-                    } else {
-                        alert("{{ session('success') }}");
-                    }
-                });
-            } else {
-                alert("{{ session('success') }}");
-            }
-        });
-    </script>
-    @endif
 </main>
 @endsection

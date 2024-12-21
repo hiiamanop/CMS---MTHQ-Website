@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProgramWirausaha;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProgramWirausahaController extends Controller
 {
@@ -12,7 +14,7 @@ class ProgramWirausahaController extends Controller
      */
     public function index()
     {
-        $programWirausahas = ProgramWirausaha::paginate(10);
+        $programWirausahas = ProgramWirausaha::with('section')->paginate(10);
         return view('program_wirausaha.index', compact('programWirausahas'));
     }
 
@@ -21,7 +23,8 @@ class ProgramWirausahaController extends Controller
      */
     public function create()
     {
-        return view('program_wirausaha.create');
+        $sections = Section::all();
+        return view('program_wirausaha.create', compact('sections'));
     }
 
     /**
@@ -29,57 +32,88 @@ class ProgramWirausahaController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
-        $request->validate([
+        // Validate incoming request data
+        $validatedData = $request->validate([
+            'section_id' => 'nullable|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string|max:255',
+            'tipe_konten' => 'nullable|in:teks,gambar',
+            'konten_teks' => 'nullable|string',
+            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Simpan ke database
-        ProgramWirausaha::create($request->all());
+        // Handle image upload if present
+        if ($request->hasFile('konten_gambar')) {
+            $validatedData['konten_gambar'] = $request->file('konten_gambar')->store('konten_gambar', 'public');
+        }
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('program_wirausaha.index')->with('success', 'Program Wirausaha berhasil ditambahkan.');
+        // Create the ProgramTahfidz record
+        ProgramWirausaha::create($validatedData);
+
+        // Redirect with success message
+        return redirect()->route('program_wirausaha.index')->with('success', 'Program Tahfidz created successfully.');
+    }
+
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(ProgramWirausaha $programWirausaha)
+    {
+        return view('program_wirausaha.show', compact('programWirausaha'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(ProgramWirausaha $programWirausaha)
     {
-        $programWirausaha = ProgramWirausaha::findOrFail($id);
-        return view('program_wirausaha.edit', compact('programWirausaha'));
+        $sections = Section::all();
+        return view('program_wirausaha.edit', compact('programWirausaha', 'sections'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-    {
-        // Validasi input
-        $request->validate([
-            'nama_attribute' => 'required|string|max:255',
-            'keterangan' => 'required|string|max:255',
-        ]);
+    public function update(Request $request, ProgramWirausaha $programWirausaha)
+{
+    // Validate request data
+    $validatedData = $request->validate([
+        'section_id' => 'nullable|exists:sections,id',
+        'nama_attribute' => 'required|string|max:255',
+        'tipe_konten' => 'nullable|in:teks,gambar',
+        'konten_teks' => 'nullable|string',
+        'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-        // Update data
-        $programWirausaha = ProgramWirausaha::findOrFail($id);
-        $programWirausaha->update($request->all());
-
-        // Redirect dengan pesan sukses
-        return redirect()->route('program_wirausaha.index')->with('success', 'Program Wirausaha berhasil diperbarui.');
+    // Handle image upload if exists
+    if ($request->hasFile('konten_gambar')) {
+        // Delete old image if exists
+        if ($programWirausaha->konten_gambar) {
+            Storage::delete('public/' . $programWirausaha->konten_gambar);
+        }
+        // Store the new image
+        $validatedData['konten_gambar'] = $request->file('konten_gambar')->store('konten_gambar', 'public');
     }
+
+    // Update the record
+    $programWirausaha->update($validatedData);
+
+    // Redirect with success message
+    return redirect()->route('program_wirausaha.index')->with('success', 'Program Tahfidz updated successfully.');
+}
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(ProgramWirausaha $programWirausaha)
     {
-        // Hapus data
-        $programWirausaha = ProgramWirausaha::findOrFail($id);
+        if ($programWirausaha->konten_gambar) {
+            Storage::delete($programWirausaha->konten_gambar);
+        }
+
         $programWirausaha->delete();
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('program_wirausaha.index')->with('success', 'Program Wirausaha berhasil dihapus.');
+        return redirect()->route('program_wirausaha.index')->with('success', 'Program wirausaha berhasil dihapus.');
     }
 }

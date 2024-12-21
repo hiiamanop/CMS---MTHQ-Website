@@ -9,14 +9,28 @@ use Illuminate\Support\Facades\Storage;
 
 class ApiGaleriController extends Controller
 {
-    // Fetch all 'Galeri' with its associated 'Section'
-    public function index()
+    // Get all 'Galeri' with optional filter by 'jenis_galeri'
+    public function index(Request $request)
     {
-        $galeris = Galeri::with('section')->get();
+        $query = Galeri::with('section'); // Eager load the related 'section'
+
+        // Check if a 'jenis_galeri' filter is provided and is valid
+        if ($request->has('jenis_galeri') && in_array($request->jenis_galeri, Galeri::getJenisGaleriOptions())) {
+            $query->where('jenis_galeri', $request->jenis_galeri);
+        }
+
+        // Optionally, you can filter by other fields (like section_id, etc.) as needed
+        if ($request->has('section_id')) {
+            $query->where('section_id', $request->section_id);
+        }
+
+        // Execute the query and return the results
+        $galeris = $query->get();
+
         return response()->json($galeris);
     }
 
-    // Fetch a specific 'Galeri' by its ID
+    // Get a specific 'Galeri' by ID
     public function show($id)
     {
         $galeri = Galeri::with('section')->find($id);
@@ -28,19 +42,18 @@ class ApiGaleriController extends Controller
         return response()->json($galeri);
     }
 
-    // Create a new 'Galeri'
+    // Store a new 'Galeri'
     public function store(Request $request)
     {
         $request->validate([
             'section_id' => 'required|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'jenis_galeri' => 'required|in:' . implode(',', Galeri::getJenisGaleriOptions()),
-            'tipe_konten' => 'required|string|max:255',
+            'jenis_galeri' => 'required|in:' . implode(',', Galeri::getJenisGaleriOptions()), // Validate against allowed options
+            'tipe_konten' => 'required|string',
             'konten_teks' => 'required|string',
             'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // If konten_gambar is provided, store the image
         if ($request->hasFile('konten_gambar')) {
             $imagePath = $request->file('konten_gambar')->store('galeri_images', 'public');
             $request->merge(['konten_gambar' => $imagePath]);
@@ -63,13 +76,12 @@ class ApiGaleriController extends Controller
         $request->validate([
             'section_id' => 'required|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
-            'jenis_galeri' => 'required|in:' . implode(',', Galeri::getJenisGaleriOptions()),
-            'tipe_konten' => 'required|string|max:255',
+            'jenis_galeri' => 'required|in:' . implode(',', Galeri::getJenisGaleriOptions()), // Validate against allowed options
+            'tipe_konten' => 'required|string',
             'konten_teks' => 'required|string',
             'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // If konten_gambar is updated, store the new image
         if ($request->hasFile('konten_gambar')) {
             $imagePath = $request->file('konten_gambar')->store('galeri_images', 'public');
             $request->merge(['konten_gambar' => $imagePath]);
@@ -80,7 +92,7 @@ class ApiGaleriController extends Controller
         return response()->json($galeri);
     }
 
-    // Delete a specific 'Galeri'
+    // Delete a 'Galeri'
     public function destroy($id)
     {
         $galeri = Galeri::find($id);
@@ -88,7 +100,7 @@ class ApiGaleriController extends Controller
         if (!$galeri) {
             return response()->json(['message' => 'Galeri not found'], 404);
         }
-
+ 
         // Optionally delete the image from storage
         if ($galeri->konten_gambar) {
             Storage::disk('public')->delete($galeri->konten_gambar);

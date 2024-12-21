@@ -18,7 +18,7 @@
                   ->constrained('sections') // Menyebut tabel secara eksplisit
                   ->cascadeOnDelete(); // Hapus detail jika berita terkait dihapus
                 $table->string('nama_attribute');
-                $table->enum('tipe_konten', ['teks', 'gambar'])->default('teks');
+                $table->enum('tipe_konten', ['teks', 'gambar'])->default('teks')->nullable();
             $table->text('konten_teks')->nullable();
             $table->string('konten_gambar')->nullable();
                 $table->timestamps();
