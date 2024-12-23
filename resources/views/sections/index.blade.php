@@ -28,6 +28,21 @@
                         <div class="table-responsive p-0">
                             <a href="{{ route('sections.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Section Item</a>
 
+                            <!-- Alert Success/Error -->
+                            @if(session('success'))
+                            <script>
+                                Swal.fire('Berhasil!', '{{ session('
+                                    success ') }}', 'success');
+                            </script>
+                            @endif
+
+                            @if(session('error'))
+                            <script>
+                                Swal.fire('Gagal!', '{{ session('
+                                    error ') }}', 'error');
+                            </script>
+                            @endif
+                            
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
@@ -77,31 +92,7 @@
     </div>
 </main>
 
-@if(session()->has('success') || session()->has('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            @if(session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: '{{ session('success') }}',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            @endif
-            
-            @if(session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal!',
-                    text: '{{ session('error') }}',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            @endif
-        });
-    </script>
-@endif
+
 
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

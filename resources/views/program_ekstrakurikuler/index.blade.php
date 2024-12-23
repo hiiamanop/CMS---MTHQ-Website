@@ -62,11 +62,11 @@
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             {{ $programWirausaha->section ? $programWirausaha->section->item . ' - ' . $programWirausaha->section->section : 'N/A' }}
                                         </td>
-                                        <td class="text-xs text-center">{{ $programWirausaha->nama_attribute }}</td>
-                                        <td class="text-xs text-center">
+                                        <td class="text-xs font-weight-bold text-center">{{ $programWirausaha->nama_attribute }}</td>
+                                        <td class="text-xs font-weight-bold text-center">
                                             {{ $programWirausaha->konten_teks ?? 'N/A' }}
                                         </td>
-                                        <td class="text-xs text-center">
+                                        <td class="text-xs font-weight-bold text-center">
                                             @if($programWirausaha->konten_gambar)
                                             <img src="{{ asset('storage/' . $programWirausaha->konten_gambar) }}" alt="" style="height: 50px;">
                                             @else

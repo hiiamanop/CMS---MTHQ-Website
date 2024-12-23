@@ -49,9 +49,9 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                             @endif
+                            <label class="form-label">Role</label>
 
-                            <div class="input-group input-group-outline my-3">
-                                <label class="form-label">Role</label>
+                            <div class="input-group input-group-outline mb-3">
                                 <input type="text" name="role" class="form-control" value="{{ old('role') }}" required>
                             </div>
 

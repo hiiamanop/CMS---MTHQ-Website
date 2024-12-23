@@ -21,8 +21,8 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Daftar Detail Berita</h6>
-                            <a href="{{ route('detail-beritas.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Detail Berita</a>
+                            <h6 class="text-white text-capitalize ps-3">Daftar Attribute Detail Berita</h6>
+                            <a href="{{ route('detail-beritas.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Attribute </a>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">

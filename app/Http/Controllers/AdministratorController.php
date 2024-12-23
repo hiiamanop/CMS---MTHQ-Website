@@ -48,7 +48,7 @@ class AdministratorController extends Controller
                 'max:255', 
                 Rule::unique('users', 'email')
             ],
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8|',
             'role_id' => [
                 'required', 
                 Rule::in([1, 2])  // Restrict to admin roles
@@ -120,7 +120,7 @@ class AdministratorController extends Controller
                 'max:255', 
                 Rule::unique('users', 'email')->ignore($administrator->id)
             ],
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => 'nullable|string|min:8|',
             'role_id' => [
                 'required', 
                 Rule::in([1, 2])  // Restrict to admin roles

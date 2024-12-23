@@ -22,8 +22,8 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Daftar Program Talim</h6>
-                            <a href="{{ route('program_talim.create') }}" class="btn btn-primary btn-sm float-end mx-3">Tambah Program Talim</a>
+                            <h6 class="text-white text-capitalize ps-3">Daftar Attribute Program Talim</h6>
+                            <a href="{{ route('program_talim.create') }}" class="btn btn-primary btn-sm float-end mx-3">Tambah Attribute</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
@@ -62,8 +62,8 @@
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             {{ $programTalim->section ? $programTalim->section->item . ' - ' . $programTalim->section->section : 'N/A' }}
                                         </td>
-                                        <td class="text-xs text-center">{{ $programTalim->nama_attribute }}</td>
-                                        <td class="text-xs text-center">
+                                        <td class="text-xs font-weight-bold text-center">{{ $programTalim->nama_attribute }}</td>
+                                        <td class="text-xs font-weight-bold text-center">
                                             {{ $programTalim->konten_teks ?? 'N/A' }}
                                         </td>
                                         <td class="text-xs text-center">

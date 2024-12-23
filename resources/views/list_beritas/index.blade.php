@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Halaman</a></li>
-                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Daftar Berita</li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Highlight Berita</li>
                 </ol>
             </nav>
         </div>
@@ -21,8 +21,8 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Daftar List Berita</h6>
-                            <a href="{{ route('list_beritas.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Berita</a>
+                            <h6 class="text-white text-capitalize ps-3">Daftar Attribute Highlight Berita</h6>
+                            <a href="{{ route('list_beritas.create') }}" class="btn btn-primary btn-sm float-end me-3">Tambah Attribute</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">

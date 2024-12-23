@@ -50,18 +50,37 @@
                             </div>
                             @endif
 
-                            <div class="input-group input-group-outline my-3">
-                                <label class="form-label">Nama</label>
+                            <label class="form-label">Nama</label>
+
+                            <div class="input-group input-group-outline mb-3">
                                 <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
                             </div>
 
-                            <div class="input-group input-group-outline my-3">
-                                <label class="form-label">Email</label>
+                            <label class="form-label">Role</label>
+
+                            <div class="input-group input-group-outline mb-3">
+                                <select name="role_id" id="role_id" class="form-control">
+                                    <option value="">-- Pilih Role --</option>
+                                    @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}">
+                                        {{ $role->item . ' - ' . $role->role }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                            <label class="form-label">Email</label>
+
+                            <div class="input-group input-group-outline mb-3">
                                 <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
                             </div>
 
-                            <div class="input-group input-group-outline my-3">
-                                <label class="form-label">Password</label>
+
+                            <label class="form-label">Password</label>
+
+
+                            <div class="input-group input-group-outline mb-3">
                                 <input type="password" name="password" class="form-control" required>
                             </div>
 

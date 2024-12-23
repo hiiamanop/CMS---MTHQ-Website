@@ -30,7 +30,7 @@ class KalenderAkademikController extends Controller
             'section_id' => 'required|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
             'konten_teks' => 'nullable|string',
-            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Optional image upload
+            'konten_gambar' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf', // Menambahkan PDF ke validasi
         ]);
 
         // Handle file upload if there is a file
@@ -55,15 +55,16 @@ class KalenderAkademikController extends Controller
         return view('kalender_akademik.edit', compact('kalenderAkademik', 'sections'));
     }
 
-    // Update the specified kalender akademik in storage
+    // Update the specified kalender akademik in storageZ
     public function update(Request $request, KalenderAkademik $kalenderAkademik)
     {
         $request->validate([
             'section_id' => 'required|exists:sections,id',
             'nama_attribute' => 'required|string|max:255',
             'konten_teks' => 'nullable|string',
-            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Optional image upload
+            'konten_gambar' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf', // Menambahkan PDF ke validasi
         ]);
+        
 
         // Handle file upload if there is a new file
         if ($request->hasFile('konten_gambar')) {

@@ -40,6 +40,21 @@
                             <div class="table-responsive p-0">
                                 <a href="{{ route('roles.create') }}" class="btn btn-primary btn-sm float-end" style="margin-right: 20px;">Add Role</a>
 
+                                <!-- Alert Success/Error -->
+                                @if(session('success'))
+                                <script>
+                                    Swal.fire('Berhasil!', '{{ session('
+                                        success ') }}', 'success');
+                                </script>
+                                @endif
+
+                                @if(session('error'))
+                                <script>
+                                    Swal.fire('Gagal!', '{{ session('
+                                        error ') }}', 'error');
+                                </script>
+                                @endif
+
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
@@ -85,27 +100,7 @@
                 </div>
             </div>
 
-            <footer class="footer py-4">
-                <div class="container-fluid">
-                    <div class="row align-items-center justify-content-lg-between">
-                        <div class="col-lg-6 mb-lg-0 mb-4">
-                            <div class="copyright text-center text-sm text-muted text-lg-start">
-                                © <script>
-                                    document.write(new Date().getFullYear())
-                                </script>,
-                                <a href="https:mhtq.com" class="font-weight-bold" target="_blank">Copyright Mahad MHTQ</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                                <li class="nav-item">
-                                    <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">MHTQ.com</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            
         </div>
         <!-- End content -->
 

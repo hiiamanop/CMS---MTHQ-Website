@@ -22,8 +22,8 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">List Kalender Akademik</h6>
-                            <a href="{{ route('kalender_akademiks.create') }}" class="btn btn-primary btn-sm float-end mx-3">Tambah Kalender Akademik</a>
+                            <h6 class="text-white text-capitalize ps-3">Daftar Attribute Kalender Akademik</h6>
+                            <a href="{{ route('kalender_akademiks.create') }}" class="btn btn-primary btn-sm float-end mx-3">Tambah Attribute</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
@@ -62,11 +62,11 @@
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             {{ $kalenderAkademik->section ? $kalenderAkademik->section->item . ' - ' . $kalenderAkademik->section->section : 'N/A' }}
                                         </td>
-                                        <td class="text-xs text-center">{{ $kalenderAkademik->nama_attribute }}</td>
+                                        <td class="text-xs font-weight-bold text-center">{{ $kalenderAkademik->nama_attribute }}</td>
                                         <td class="text-xs text-center">
                                             {{ $kalenderAkademik->konten_teks ?? 'N/A' }}
                                         </td>
-                                        <td class="text-xs text-center">
+                                        <td class="text-xs font-weight-bold text-center">
                                             @if($kalenderAkademik->konten_gambar)
                                             <img src="{{ asset('storage/' . $kalenderAkademik->konten_gambar) }}" alt="" style="height: 50px;">
                                             @else

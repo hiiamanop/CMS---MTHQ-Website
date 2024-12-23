@@ -33,7 +33,7 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-dark shadow-dark border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Tabel Administrator</h6>
+                            <h6 class="text-white text-capitalize ps-3">Tabel Admin</h6>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
@@ -41,13 +41,21 @@
                             {{-- Add Administrator Button --}}
                             <a href="{{ route('administrators.create') }}" class="btn btn-primary btn-sm float-end" style="margin-right: 20px;">Add Administrator</a>
 
-                            {{-- Success Message --}}
+                            <!-- Alert Success/Error -->
                             @if(session('success'))
-                                <div class="alert alert-success alert-dismissible fade show mx-3" role="alert">
-                                    {{ session('success') }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
+                            <script>
+                                Swal.fire('Berhasil!', '{{ session('
+                                    success ') }}', 'success');
+                            </script>
                             @endif
+
+                            @if(session('error'))
+                            <script>
+                                Swal.fire('Gagal!', '{{ session('
+                                    error ') }}', 'error');
+                            </script>
+                            @endif
+
 
                             <table class="table align-items-center mb-0">
                                 <thead>
@@ -98,54 +106,11 @@
             </div>
         </div>
 
-        <footer class="footer py-4">
-            <div class="container-fluid">
-                <div class="row align-items-center justify-content-lg-between">
-                    <div class="col-lg-6 mb-lg-0 mb-4">
-                        <div class="copyright text-center text-sm text-muted text-lg-start">
-                            © <script>
-                                document.write(new Date().getFullYear())
-                            </script>,
-                            <a href="https:mhtq.com" class="font-weight-bold" target="_blank">Copyright Mahad MHTQ</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                            <li class="nav-item">
-                                <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">MHTQ.com</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        
     </div>
     <!-- End content -->
 </main>
 
-@section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    $(document).ready(function() {
-        $('.delete-btn').on('click', function(e) {
-            e.preventDefault();
-            var form = $(this).closest('form');
-            
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
-    });
-</script>
-@endsection
+
 @endsection

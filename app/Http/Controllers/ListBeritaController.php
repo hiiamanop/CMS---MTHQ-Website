@@ -44,7 +44,7 @@ class ListBeritaController extends Controller
             'judul_berita' => 'required|string|max:255',
             'tanggal_upload' => 'required|date',
             'highlight_berita' => 'required|string',
-            'tipe_konten' => 'required|in:teks,gambar',
+            'tipe_konten' => 'nullable|in:teks,gambar',
             'konten_teks' => 'nullable|required_if:tipe_konten,teks',
             'konten_gambar' => 'nullable|required_if:tipe_konten,gambar|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -102,9 +102,9 @@ class ListBeritaController extends Controller
             'judul_berita' => 'required|string|max:255',
             'tanggal_upload' => 'required|date',
             'highlight_berita' => 'required|string',
-            'tipe_konten' => 'required|in:teks,gambar',
-            'konten_teks' => 'nullable|required_if:tipe_konten,teks',
-            'konten_gambar' => 'nullable|required_if:tipe_konten,gambar|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'tipe_konten' => 'nullable|in:teks,gambar',
+            'konten_teks' => 'nullable|',
+            'konten_gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Handle upload gambar baru
