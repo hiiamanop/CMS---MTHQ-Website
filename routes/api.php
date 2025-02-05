@@ -113,6 +113,8 @@ use App\Http\Controllers\Api\ApiTentangMhtqProfileController;
 
 Route::get('tentang-mhtq-profile', [ApiTentangMhtqProfileController::class, 'index']);
 
+Route::get('/testimoni', [ApiBerandaController::class, 'testimoni']);
 
+Route::get('/jumlah-beranda', [ApiBerandaController::class, 'JumlahBeranda']);
 
-
+Route::get('/pendaftaran-santri', [ApiBerandaController::class, 'PendaftaranSantriBaru']);

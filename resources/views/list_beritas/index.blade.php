@@ -77,7 +77,7 @@
                                             {{ \Carbon\Carbon::parse($berita->tanggal_upload)->format('d M Y') }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
-                                            {{ $berita->highlight_berita }}
+                                            {{ Str::limit($berita->highlight_berita, 10) }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             {{ ucfirst($berita->tipe_konten) }}

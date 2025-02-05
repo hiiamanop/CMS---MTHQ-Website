@@ -49,7 +49,7 @@
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">No</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Item - Section - Halaman</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Nama Attribute</th>
-                                        
+
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Tipe Konten</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Teks Konten</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">Gambar Konten</th>
@@ -63,12 +63,12 @@
                                             {{ ($berandas->currentPage() - 1) * $berandas->perPage() + $index + 1 }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
-                                            {{ $beranda->section ? $beranda->section->item . ' - ' . $beranda->section->section : 'N/A' }}
+                                            {{ Str::limit($beranda->section ? $beranda->section->item . ' - ' . $beranda->section->section : 'N/A', 20) }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $beranda->nama_attribute }}</td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">{{ $beranda->tipe_konten }}</td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
-                                            {{ $beranda->konten_teks ?? 'N/A' }}
+                                            {{ Str::limit($beranda->konten_teks ?? 'N/A', 10) }}
                                         </td>
                                         <td class="text-xs font-weight-bold mb-0 text-center">
                                             @if($beranda->konten_gambar)
