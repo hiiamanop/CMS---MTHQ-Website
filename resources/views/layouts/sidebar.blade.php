@@ -99,13 +99,13 @@
             <li class="nav-item">
                 <a class="nav-link text-dark {{ request()->routeIs('detail-beritas.index') ? 'active' : '' }}" href="{{ route('detail-beritas.index') }}">
 
-                    <!-- <i class="material-symbols-rounded opacity-5">table_view</i>
+                     <i class="material-symbols-rounded opacity-5">table_view</i>
                     <span class="nav-link-text ms-1">Detail Berita</span>
                 </a>
             </li>
 
 
-            <li class="nav-item mt-3">
+           <!-- <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5">Program</h6>
             </li>
             <li class="nav-item">
