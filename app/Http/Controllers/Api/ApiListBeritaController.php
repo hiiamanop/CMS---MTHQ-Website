@@ -32,7 +32,27 @@ class ApiListBeritaController extends Controller
                     $query->whereMonth('tanggal_upload', $now->month)
                           ->whereYear('tanggal_upload', $now->year);
                     break;
+                case 'this_year':
+                    $query->whereYear('tanggal_upload', $now->year);
+                    break;
+                case 'last_five_years':
+                    $query->whereBetween('tanggal_upload', [
+                        $now->copy()->subYears(5)->startOfYear()->toDateString(),
+                        $now->toDateString()
+                    ]);
+                    break;
             }
+        }
+        
+        // Filter by custom date range
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $startDate = Carbon::parse($request->start_date)->startOfDay();
+            $endDate = Carbon::parse($request->end_date)->endOfDay();
+            
+            $query->whereBetween('tanggal_upload', [
+                $startDate->toDateTimeString(),
+                $endDate->toDateTimeString()
+            ]);
         }
         
         // Filter by kategori
