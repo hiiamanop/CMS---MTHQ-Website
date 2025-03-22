@@ -70,8 +70,8 @@
                                         <td class="text-xs font-weight-bold text-center">
                                             {{ $detail->nama_attribute }}
                                         </td>
-                                        <td class="text-xs font-weight-bold text-center">
-                                            {{ $detail->konten_teks ?? 'N/A' }}
+                                        <td class="text-xs font-weight-bold mb-0 text-center">
+                                            {{ Str::limit($beranda->konten_teks ?? 'N/A', 10) }}
                                         </td>
                                         <td class="text-xs font-weight-bold text-center">
                                             @if($detail->konten_gambar)
